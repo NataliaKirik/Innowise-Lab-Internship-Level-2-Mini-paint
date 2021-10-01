@@ -1,11 +1,7 @@
 import React from 'react';
 
 function SettingBar() {
-    return (
-        <div>
-
-        </div>
-    );
+  return <div>SettingBar</div>;
 }
 
 export default SettingBar;
