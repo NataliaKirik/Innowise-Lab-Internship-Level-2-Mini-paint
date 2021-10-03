@@ -1,7 +1,10 @@
 import React from 'react';
+import s from './login.module.css';
 
-function Login() {
-  return <div>Login</div>;
+export function Login() {
+    return (
+        <div className={s.mainContainer}>
+            <div className={s.form}>form</div>
+        </div>
+    );
 }
-
-export default Login;
