@@ -1,21 +1,8 @@
 .mainContainer {
-    border: 1px solid black;
-    flex-direction: column;
-    height: 82vh;
-}
-
-.header {
-    border: 1px solid red;
-}
-
-.form {
     display: flex;
     flex-direction: column;
-    justify-content: space-around;
+    height: 85vh;
     align-items: center;
-    width: 50vh;
-    margin: 0 auto;
-    background: rgba(250, 236, 222, 0.9);
-    height: 380px;
-    border-radius: 25px;
 }
+
+
