@@ -4,9 +4,10 @@ import { Button, TextField } from '@mui/material';
 import s from './form.module.css';
 import { ErrorMessage } from '@hookform/error-message';
 
-type Inputs = {
+export type Inputs = {
     email: string;
     password: string;
+    password_repeat: string;
 };
 
 export function Form() {

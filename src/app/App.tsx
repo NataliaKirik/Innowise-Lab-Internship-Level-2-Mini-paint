@@ -1,11 +1,11 @@
 import React from 'react';
 import { HashRouter, Route, Switch } from 'react-router-dom';
 import { Login } from '../pages/login/ui/Login';
-import Register from '../pages/register/ui/Register';
 import { PATH } from '../common/constants/routes';
 import { Gallery } from '../pages/gallery/ui/Gallery';
 import { Paint } from '../pages/paint/ui/Paint';
 import Header from '../common/components/header/Header';
+import { Register } from '../pages/register/ui/Register';
 
 function App() {
     return (
