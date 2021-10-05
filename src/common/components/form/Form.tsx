@@ -2,6 +2,7 @@ import React from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { Button, TextField } from '@mui/material';
 import s from './form.module.css';
+import { ErrorMessage } from '@hookform/error-message';
 
 type Inputs = {
     email: string;
@@ -18,12 +19,13 @@ export function Form() {
             email: '',
             password: '',
         },
+        mode: 'onChange',
     });
 
     const onSubmit: SubmitHandler<Inputs> = (data) => console.log('Send from form:' + data);
 
     return (
-        <div>
+        <div className={s.formContainer}>
             <form onSubmit={handleSubmit(onSubmit)} className={s.form}>
                 <div className={s.text}>Email</div>
                 <TextField
@@ -43,6 +45,12 @@ export function Form() {
                     className={s.input}
                     autoComplete={'off'}
                 />
+                <ErrorMessage
+                    errors={errors}
+                    name="email"
+                    render={({ message }) => <div className={s.error}>{message}</div>}
+                />
+
                 <div className={s.text}>Password</div>
                 <TextField
                     {...register('password', {
@@ -65,8 +73,11 @@ export function Form() {
                     className={s.input}
                     type="password"
                 />
-                {errors.email && <span>Email error</span>}
-                {errors.password && <span>This field is required</span>}
+                <ErrorMessage
+                    errors={errors}
+                    name="password"
+                    render={({ message }) => <div className={s.error}>{message}</div>}
+                />
 
                 <div className={s.buttons}>
                     <Button variant={'contained'} type={'submit'}>

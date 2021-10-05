@@ -5,11 +5,10 @@ import s from './header.module.css';
 
 function Header() {
     return (
-        <div className={`${s.headerWrapper}`}>
-            <div className={s.componentRoutesWrapper}>
-                <div className={`${s.text}`}>Mini paint</div>
-            </div>
-            <ul className={`${s.main_Menu}`}>
+        <div className={s.header}>
+            <div className={s.title}>Mini paint</div>
+
+            <ul className={s.menu}>
                 <li>
                     <NavLink to={PATH.LOGIN} activeClassName={s.active}>
                         Login

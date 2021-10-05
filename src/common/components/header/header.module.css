@@ -1,31 +1,30 @@
 @import url('https://fonts.googleapis.com/css?family=Ubuntu+Condensed');
 
-.headerWrapper {
+.header {
     background-image: url("https://images.pexels.com/photos/624015/pexels-photo-624015.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940");
     height: 15vh;
     background-size: cover;
 }
 
-.text {
-    padding: 5px 0 0 5px;
-    margin: 0 0 10px 0;
+.title {
+    padding: 5px 0 0 3px;
     text-align: center;
     font-family: 'Ubuntu Condensed', sans-serif;
     letter-spacing: 2px;
     font-weight: bold;
-    font-size: 26px;
+    font-size: 30px;
     text-transform: uppercase;
     color: whitesmoke;
     text-shadow: black 0 0 5px;
 }
 
-.text:hover {
+.title:hover {
     text-shadow: rgba(96, 80, 75, 0.95) 0 0 6px;
     cursor: pointer
 }
 
 
-.main_Menu {
+.menu {
     list-style: none;
     padding: 3px 0 0;
     text-align: center;
@@ -33,52 +32,47 @@
     opacity: 0.8;
 }
 
-.main_Menu li {
+.menu li {
     display: inline-block;
 }
 
-.main_Menu li:after {
+.menu li:after {
     content: "|";
     color: #606060;
     display: inline-block;
     vertical-align: top;
 }
 
-.main_Menu li:last-child:after {
+.menu li:last-child:after {
     content: none;
 }
 
-.main_Menu a {
+.menu a {
     text-decoration: none;
     font-family: 'Ubuntu Condensed', sans-serif;
     letter-spacing: 2px;
-    position: relative;
     padding-bottom: 10px;
     margin: 0 34px 0 30px;
     font-size: 18px;
     text-transform: uppercase;
     display: inline-block;
-    transition: color .2s;
     font-weight: bold;
-}
-
-.main_Menu a {
     color: #1c19c5;
     opacity: 1;
 }
 
-.main_Menu a.active {
-    border-bottom: rgba(75, 63, 59, 0.95) 4px solid;
+.menu a.active {
+    border-bottom: rgba(75, 63, 59, 0.95) 5px solid;
     opacity: 1;
 }
 
-.main_Menu a.current, .main_Menu a:hover {
+.menu a.current, .menu a:hover {
     color: #6667af;
     opacity: 1;
 }
 
-.main_Menu a:before,
-.main_Menu a:after {
+.menu a:before,
+.menu a:after {
     content: "";
     position: absolute;
     height: 4px;
