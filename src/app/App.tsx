@@ -6,10 +6,11 @@ import { Gallery } from '../pages/gallery/ui/Gallery';
 import { Paint } from '../pages/paint/ui/Paint';
 import Header from '../common/components/header/Header';
 import { Register } from '../pages/register/ui/Register';
+import s from './app.module.css';
 
 function App() {
     return (
-        <div>
+        <div className={s.mainContainer}>
             <HashRouter>
                 <Header />
                 <Switch>

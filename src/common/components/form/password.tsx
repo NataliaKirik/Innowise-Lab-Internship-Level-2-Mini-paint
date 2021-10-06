@@ -3,7 +3,12 @@ import { TextField } from '@mui/material';
 import s from './form.module.css';
 import { ErrorMessage } from '@hookform/error-message';
 import { useForm } from 'react-hook-form';
-import { Inputs } from './Form';
+
+export type Inputs = {
+    email: string;
+    password: string;
+    password_repeat: string;
+};
 
 export const Password = () => {
     const {

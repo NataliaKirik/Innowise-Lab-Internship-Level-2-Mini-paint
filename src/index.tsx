@@ -1,23 +1,16 @@
-import React, { createContext } from 'react';
+import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import App from './app/App';
 import reportWebVitals from './reportWebVitals';
-import firebase from 'firebase/compat';
-import { auth } from './firebase/firebase';
-
-const Context = createContext<any>(null);
+import { Provider } from 'react-redux';
+import { store } from './app/store';
 
 ReactDOM.render(
     <React.StrictMode>
-        <Context.Provider
-            value={{
-                firebase,
-                auth,
-            }}
-        >
+        <Provider store={store}>
             <App />
-        </Context.Provider>
+        </Provider>
     </React.StrictMode>,
     document.getElementById('root'),
 );

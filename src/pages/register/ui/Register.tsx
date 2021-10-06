@@ -2,8 +2,8 @@ import React from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { Button, TextField } from '@mui/material';
 import { ErrorMessage } from '@hookform/error-message';
+import { Inputs } from '../../../common/components/form/password';
 import s from '../../../common/components/form/form.module.css';
-import { Inputs } from '../../../common/components/form/Form';
 
 export function Register() {
     const {
@@ -93,12 +93,9 @@ export function Register() {
                     render={({ message }) => <div className={s.error}>{message}</div>}
                 />
 
-                <div className={s.buttons}>
+                <div className={s.button}>
                     <Button variant={'contained'} type={'submit'}>
                         Registration
-                    </Button>
-                    <Button variant={'contained'} type={'submit'}>
-                        Sign in
                     </Button>
                 </div>
             </form>
