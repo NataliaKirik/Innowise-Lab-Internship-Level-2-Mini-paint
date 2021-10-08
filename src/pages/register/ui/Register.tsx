@@ -4,8 +4,11 @@ import { Button, TextField } from '@mui/material';
 import { ErrorMessage } from '@hookform/error-message';
 import { Inputs } from '../../../common/components/form/password';
 import s from '../../../common/components/form/form.module.css';
+import { useDispatch } from 'react-redux';
+import { createUser } from '../../../features/loginSlice';
 
 export function Register() {
+    const dispatch = useDispatch();
     const {
         watch,
         register,
@@ -19,7 +22,14 @@ export function Register() {
         mode: 'onChange',
     });
 
-    const onSubmit: SubmitHandler<Inputs> = (data) => console.log('Send from form:' + data);
+    const onSubmit: SubmitHandler<Inputs> = (data) => {
+        dispatch(
+            createUser({
+                email: data.email,
+                password: data.password_repeat,
+            }),
+        );
+    };
 
     return (
         <div className={s.formContainer}>

@@ -1,24 +1,24 @@
-import React, { useState } from 'react';
-import { auth } from '../../../firebase/firebase';
-import { useDispatch, useSelector } from 'react-redux';
-import { AppRootStateType } from '../../../app/store';
-import { setActiveUser, setUserLogOut } from '../../../features/loginSlice';
+import React from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { Button, TextField } from '@mui/material';
 import { ErrorMessage } from '@hookform/error-message';
 import { Inputs } from '../../../common/components/form/password';
 import s from '../../../common/components/form/form.module.css';
-import { Link } from '@mui/material';
 import { NavLink } from 'react-router-dom';
 import { PATH } from '../../../common/constants/routes';
+import { useDispatch } from 'react-redux';
+import { authUser } from '../../../features/loginSlice';
 
 export function Login() {
     const dispatch = useDispatch();
-    const error = useSelector<AppRootStateType, string | null>((state) => state.login.errorText);
-    const isAuth = useSelector<AppRootStateType, boolean>((state) => state.login.isAuth);
-
-    let [email, setEmail] = useState<string>('nata@gmail.com');
-    let [password, setPassword] = useState<string>('12345');
+    const onSubmit: SubmitHandler<Inputs> = (data) => {
+        dispatch(
+            authUser({
+                email: data.email,
+                password: data.password,
+            }),
+        );
+    };
 
     const {
         register,
@@ -31,8 +31,6 @@ export function Login() {
         },
         mode: 'onChange',
     });
-
-    const onSubmit: SubmitHandler<Inputs> = (data) => console.log('Send from form:' + data);
 
     return (
         <div className={s.formContainer}>
@@ -54,10 +52,6 @@ export function Login() {
                     variant={'outlined'}
                     className={s.input}
                     autoComplete={'off'}
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                        setEmail(e.currentTarget.value);
-                    }}
-                    value={email}
                 />
                 <ErrorMessage
                     errors={errors}
@@ -86,16 +80,17 @@ export function Login() {
                     variant={'outlined'}
                     className={s.input}
                     type="password"
-                    value={password}
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                        setPassword(e.currentTarget.value);
-                    }}
                 />
                 <ErrorMessage
                     errors={errors}
                     name="password"
                     render={({ message }) => <div className={s.error}>{message}</div>}
                 />
+                <div className={s.button}>
+                    <Button variant={'contained'} type={'submit'}>
+                        Log in
+                    </Button>
+                </div>
 
                 <div className={s.blockRegistration}>
                     <div className={s.regText}>Don't have an account?</div>

@@ -7,6 +7,7 @@ import { Paint } from '../pages/paint/ui/Paint';
 import Header from '../common/components/header/Header';
 import { Register } from '../pages/register/ui/Register';
 import s from './app.module.css';
+import SimpleSnackbar from '../common/components/errorSnackBar/ErrorSnackbar';
 
 function App() {
     return (
@@ -19,6 +20,7 @@ function App() {
                     <Route path={PATH.GALLERY} render={() => <Gallery />} />
                     <Route path={PATH.PAINT} render={() => <Paint />} />
                 </Switch>
+                <SimpleSnackbar />
             </HashRouter>
         </div>
     );
