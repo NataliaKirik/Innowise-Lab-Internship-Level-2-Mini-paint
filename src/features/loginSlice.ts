@@ -1,45 +1,51 @@
-import { createAsyncThunk, createSlice, Dispatch, PayloadAction } from '@reduxjs/toolkit';
-import { signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut } from 'firebase/auth';
-import firebase from 'firebase/compat';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../firebase/firebase';
-import { stat } from 'fs';
 
 // thunk
 export const createUser = createAsyncThunk('login/createUser', async ({ email, password }: AuthType, thunkAPI) => {
-    return createUserWithEmailAndPassword(auth, email, password)
-        .then(({ user }) => {
-            const userEmail = user.email;
-            const userUid = user.uid;
-            return {
-                userEmail,
-                userUid,
-            };
-        })
-        .catch((error) => {
-            return error.message;
-        });
+    try {
+        const userData = await createUserWithEmailAndPassword(auth, email, password);
+        const userEmail = userData.user.email;
+        const userUid = userData.user.uid;
+        return {
+            userEmail,
+            userUid,
+        };
+    } catch (error: any) {
+        return thunkAPI.rejectWithValue({ errorText: error.message });
+    }
 });
+
 export const authUser = createAsyncThunk('login/authUser', async ({ email, password }: AuthType, thunkAPI) => {
-    return signInWithEmailAndPassword(auth, email, password)
-        .then(({ user }) => {
-            const userEmail = user.email;
-            const userUid = user.uid;
-            return {
-                userEmail,
-                userUid,
-            };
-        })
-        .catch((error) => {
-            return error.message;
-        });
+    try {
+        const userData = await signInWithEmailAndPassword(auth, email, password);
+        const userEmail = userData.user.email;
+        const userUid = userData.user.uid;
+        return {
+            userEmail,
+            userUid,
+        };
+    } catch (error: any) {
+        return thunkAPI.rejectWithValue({ errorText: error.message });
+    }
 });
 
 const initialState: InitialStateType = {
-    userName: null,
     userEmail: null,
     uid: null,
     isAuth: false,
     errorText: null,
+};
+
+const onFulfilled = (state: InitialStateType, action: any) => {
+    state.userEmail = action.payload.userEmail;
+    state.uid = action.payload.userUid;
+    state.isAuth = true;
+};
+const onRejected = (state: InitialStateType, action: any) => {
+    state.isAuth = false;
+    state.errorText = action.payload.errorText;
 };
 
 const slice = createSlice({
@@ -47,22 +53,14 @@ const slice = createSlice({
     initialState: initialState,
     reducers: {
         setUserLogOut(state: InitialStateType) {
-            state.userName = null;
             state.userEmail = null;
         },
     },
     extraReducers: (builder) => {
-        builder.addCase(createUser.fulfilled, (state, action) => {
-            if (action.payload) {
-                state.userEmail = action.payload.userEmail;
-                state.uid = action.payload.userUid;
-                state.isAuth = true;
-            } else {
-                state.userEmail = null;
-                state.uid = null;
-                state.isAuth = false;
-            }
-        });
+        builder.addCase(createUser.fulfilled, onFulfilled);
+        builder.addCase(createUser.rejected, onRejected);
+        builder.addCase(authUser.fulfilled, onFulfilled);
+        builder.addCase(authUser.rejected, onRejected);
     },
 });
 
@@ -71,7 +69,6 @@ export const { setUserLogOut } = slice.actions;
 
 //types
 type InitialStateType = {
-    userName: string | null;
     userEmail: string | null;
     uid: string | null;
     isAuth: boolean;

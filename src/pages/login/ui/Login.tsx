@@ -2,7 +2,7 @@ import React from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { Button, TextField } from '@mui/material';
 import { ErrorMessage } from '@hookform/error-message';
-import { Inputs } from '../../../common/components/form/password';
+import { Inputs } from '../../../common/components/form/types';
 import s from '../../../common/components/form/form.module.css';
 import { NavLink } from 'react-router-dom';
 import { PATH } from '../../../common/constants/routes';
@@ -67,12 +67,12 @@ export function Login() {
                             message: 'Password is required',
                         },
                         minLength: {
-                            value: 5,
-                            message: 'Password should be at least 5 characters ',
+                            value: 6,
+                            message: 'Password should be at least 6 characters ',
                         },
                         maxLength: {
-                            value: 10,
-                            message: 'Password should be between 5 and 10 characters',
+                            value: 12,
+                            message: 'Password should be between 6 and 12 characters',
                         },
                     })}
                     color={'primary'}

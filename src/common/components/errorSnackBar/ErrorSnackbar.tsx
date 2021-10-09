@@ -2,16 +2,28 @@ import * as React from 'react';
 import Snackbar from '@mui/material/Snackbar';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
+import { useSelector } from 'react-redux';
+import { AppRootStateType } from '../../../app/store';
+import { useEffect } from 'react';
 
-export default function SimpleSnackbar() {
-    const [open, setOpen] = React.useState(true);
+export function SimpleSnackbar() {
+    const [open, setOpen] = React.useState(false);
+    const [message, setMessage] = React.useState('');
+    const errorMessage = useSelector<AppRootStateType, string | null>((state) => state.login.errorText);
+
+    useEffect(() => {
+        if (errorMessage) {
+            setMessage(errorMessage);
+            setOpen(true);
+        }
+    }, [errorMessage]);
 
     const handleClose = (event: React.SyntheticEvent | React.MouseEvent, reason?: string) => {
         if (reason === 'clickaway') {
             return;
         }
-
         setOpen(false);
+        setMessage('');
     };
 
     const action = (
@@ -24,13 +36,7 @@ export default function SimpleSnackbar() {
 
     return (
         <div>
-            <Snackbar
-                open={open}
-                autoHideDuration={6000}
-                onClose={handleClose}
-                message="Note archived"
-                action={action}
-            />
+            <Snackbar open={open} onClose={handleClose} message={message} action={action} />
         </div>
     );
 }
