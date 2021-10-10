@@ -11,7 +11,7 @@ import { SimpleSnackbar } from '../common/components/errorSnackBar/ErrorSnackbar
 
 function App() {
     return (
-        <div className={s.mainContainer}>
+        <div className={s.app}>
             <HashRouter>
                 <Header />
                 <Switch>

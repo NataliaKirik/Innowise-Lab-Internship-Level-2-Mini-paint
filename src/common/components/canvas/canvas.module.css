@@ -1,0 +1,13 @@
+canvas {
+    border: #8381e7 1px solid;
+    background-color: white;
+    margin: 20px;
+}
+
+
+.canvas {
+    height: 70vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

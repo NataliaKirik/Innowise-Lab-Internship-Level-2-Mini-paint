@@ -2,7 +2,7 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { PATH } from '../../constants/routes';
 import s from './header.module.css';
-import { Button } from '@mui/material';
+import LogInOutButton from '../logInOutButton/logInOutButton';
 
 function Header() {
     return (
@@ -32,9 +32,7 @@ function Header() {
                 </ul>
             </div>
             <div className={s.signIn}>
-                <Button variant={'contained'} type={'submit'}>
-                    Log in
-                </Button>
+                <LogInOutButton />
             </div>
         </div>
     );

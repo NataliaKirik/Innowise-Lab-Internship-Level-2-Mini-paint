@@ -36,7 +36,7 @@ export function SimpleSnackbar() {
 
     return (
         <div>
-            <Snackbar open={open} onClose={handleClose} message={message} action={action} />
+            <Snackbar open={open} onClose={handleClose} message={message} action={action} autoHideDuration={6000} />
         </div>
     );
 }

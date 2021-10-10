@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from 'firebase/auth';
 import { auth } from '../firebase/firebase';
 
 // thunk
@@ -26,6 +26,14 @@ export const authUser = createAsyncThunk('login/authUser', async ({ email, passw
             userEmail,
             userUid,
         };
+    } catch (error: any) {
+        return thunkAPI.rejectWithValue({ errorText: error.message });
+    }
+});
+
+export const logOutUser = createAsyncThunk('login/logOutUser ', async (_, thunkAPI) => {
+    try {
+        await signOut(auth);
     } catch (error: any) {
         return thunkAPI.rejectWithValue({ errorText: error.message });
     }
@@ -61,11 +69,15 @@ const slice = createSlice({
         builder.addCase(createUser.rejected, onRejected);
         builder.addCase(authUser.fulfilled, onFulfilled);
         builder.addCase(authUser.rejected, onRejected);
+        builder.addCase(logOutUser.fulfilled, (state: InitialStateType, action) => {
+            state.isAuth = false;
+        });
+        builder.addCase(logOutUser.rejected, onRejected);
     },
 });
 
 export const loginSlice = slice.reducer;
-export const { setUserLogOut } = slice.actions;
+// export const { logOutUser } = slice.actions;
 
 //types
 type InitialStateType = {
@@ -73,11 +85,6 @@ type InitialStateType = {
     uid: string | null;
     isAuth: boolean;
     errorText: string | null;
-};
-type UserActionType = {
-    userEmail: string | null;
-    isAuth: boolean;
-    errorText: string;
 };
 type AuthType = {
     email: string;

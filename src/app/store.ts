@@ -2,9 +2,11 @@ import { combineReducers } from 'redux';
 import thunkMiddleware from 'redux-thunk';
 import { configureStore } from '@reduxjs/toolkit';
 import { loginSlice } from '../features/loginSlice';
+import { paintSlice } from '../features/paintSlice';
 
 const rootReducer = combineReducers({
     login: loginSlice,
+    paint: paintSlice,
 });
 
 const store = configureStore({
