@@ -77,7 +77,6 @@ const slice = createSlice({
 });
 
 export const loginSlice = slice.reducer;
-// export const { logOutUser } = slice.actions;
 
 //types
 type InitialStateType = {

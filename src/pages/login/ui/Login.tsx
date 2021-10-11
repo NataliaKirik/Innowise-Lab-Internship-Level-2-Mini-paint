@@ -6,12 +6,12 @@ import { Inputs } from '../../../common/components/form/types';
 import s from '../../../common/components/form/form.module.css';
 import { NavLink, Redirect } from 'react-router-dom';
 import { PATH } from '../../../common/constants/routes';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { authUser } from '../../../features/loginSlice';
-import { AppRootStateType } from '../../../app/store';
+import { AppRootStateType, useAppDispatch } from '../../../app/store';
 
 export function Login() {
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
     const onSubmit: SubmitHandler<Inputs> = (data) => {
         dispatch(
             authUser({

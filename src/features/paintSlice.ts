@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 
 const initialState: InitialStateType = {
     canvas: null,
@@ -9,7 +9,7 @@ const slice = createSlice({
     initialState: initialState,
     reducers: {
         setStateCanvas(state: InitialStateType, action) {
-            // state.canvas = action.payload...
+            state.canvas = action.payload.canvasRef;
         },
     },
     extraReducers: (builder) => {
@@ -19,6 +19,7 @@ const slice = createSlice({
 });
 
 export const paintSlice = slice.reducer;
+export const { setStateCanvas } = slice.actions;
 
 //types
 type InitialStateType = {

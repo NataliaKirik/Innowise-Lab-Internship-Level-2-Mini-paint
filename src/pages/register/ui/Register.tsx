@@ -4,14 +4,14 @@ import { Button, TextField } from '@mui/material';
 import { ErrorMessage } from '@hookform/error-message';
 import { Inputs } from '../../../common/components/form/types';
 import s from '../../../common/components/form/form.module.css';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { createUser } from '../../../features/loginSlice';
-import { AppRootStateType } from '../../../app/store';
+import { AppRootStateType, useAppDispatch } from '../../../app/store';
 import { Redirect } from 'react-router-dom';
 import { PATH } from '../../../common/constants/routes';
 
 export function Register() {
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
     const isLoggedIn = useSelector<AppRootStateType, boolean>((state) => state.login.isAuth);
     const {
         watch,
