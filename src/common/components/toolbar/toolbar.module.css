@@ -1,6 +1,6 @@
 .toolbar {
     width: 100%;
-    height: 40px;
+    height: 48px;
     margin-top: 1px;
     background: #fdfffd;
     box-shadow: 0 1px 2px rgb(134, 132, 248);
@@ -9,7 +9,7 @@
 }
 
 .toolbar_leftBlock {
-    width: 400px;
+    width: 530px;
     display: flex;
     justify-content: space-around;
     align-items: flex-end;
@@ -24,9 +24,17 @@
     height: 27px;
 }
 
-.lineWidth_text {
+.text {
     text-decoration: none;
     font-family: 'Ubuntu Condensed', sans-serif;
+}
+
+.text_input {
+    text-decoration: none;
+    font-family: 'Ubuntu Condensed', sans-serif;
+    font-size: 13px;
+    font-weight: bold;
+    margin: 1px;
 }
 
 .lineWidth_input {
@@ -44,6 +52,12 @@
     font-family: 'Ubuntu Condensed', sans-serif;
     font-weight: bold;
 
+}
+
+.color_input {
+    width: 35px;
+    height: 30px;
+    margin: 0 5px;
 }
 
 .lineWidth_input:focus {
@@ -76,6 +90,7 @@
 
 .rect {
     background: url('../../../assets/img/rect.png') no-repeat center center;
+    background-size: 25px 25px;
 }
 
 .circle {
@@ -100,4 +115,9 @@
 
 .save {
     background: url('../../../assets/img/save.png') no-repeat center center;
+}
+
+.clear {
+    background: url('../../../assets/img/clear.png') no-repeat center center;
+    background-size: 25px 25px;
 }

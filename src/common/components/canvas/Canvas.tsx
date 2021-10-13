@@ -9,7 +9,8 @@ const Canvas = () => {
     const [startX, setStartX] = useState<number>(0);
     const [startY, setStartY] = useState<number>();
     const tool = useSelector<AppRootStateType, string>((state) => state.toolBar.activeTool);
-    const color = useSelector<AppRootStateType, string>((state) => state.toolBar.color);
+    const outlineColor = useSelector<AppRootStateType, string>((state) => state.toolBar.outlineColor);
+    const fillColor = useSelector<AppRootStateType, string>((state) => state.toolBar.fillColor);
     const width = useSelector<AppRootStateType, number>((state) => state.toolBar.lineWidth);
     const [isPainting, setIsPainting] = useState<boolean>(false);
     const [canvasData, setCanvasData] = useState<ImageData | undefined>();
@@ -17,10 +18,6 @@ const Canvas = () => {
     useEffect(() => {
         canvasRef.current && setCtx(canvasRef.current.getContext('2d'));
     }, []);
-
-    const clearCanvas = () => {
-        ctx && ctx.clearRect(0, 0, canvasRef.current!.width, canvasRef.current!.height);
-    };
 
     const onMouseDownHandler = (e: React.MouseEvent) => {
         const target = e.target as HTMLCanvasElement;
@@ -37,7 +34,8 @@ const Canvas = () => {
     const onMouseMoveHandler = (e: React.MouseEvent) => {
         const target = e.target as HTMLCanvasElement;
         if (isPainting && ctx && startX && startY && canvasRef.current) {
-            ctx.strokeStyle = color;
+            ctx.strokeStyle = outlineColor;
+            ctx.fillStyle = fillColor;
             ctx.lineWidth = width;
             switch (tool) {
                 case 'brush':
@@ -53,21 +51,56 @@ const Canvas = () => {
                     if (canvasData) {
                         ctx.putImageData(canvasData, 0, 0);
                     }
+                    ctx.beginPath();
+                    ctx.fillRect(startX, startY, width, height);
                     ctx.strokeRect(startX, startY, width, height);
+
                     break;
-                case 'circle':
+                case 'circle': {
+                    let currentX = e.pageX - target.offsetLeft;
+                    let currentY = e.pageY - target.offsetTop;
+                    let width = currentX - startX;
+                    let height = currentY - startY;
+                    let r = Math.sqrt(width ** 2 + height ** 2);
+                    ctx.clearRect(0, 0, 850, 550);
+                    if (canvasData) {
+                        ctx.putImageData(canvasData, 0, 0);
+                    }
+                    ctx.beginPath();
+                    ctx.arc(startX, startY, r, 0, 2 * Math.PI, false);
+                    ctx.fill();
+                    ctx.stroke();
                     break;
+                }
                 case 'eraser':
+                    ctx.strokeStyle = 'white';
+                    ctx.lineTo(e.pageX - target.offsetLeft, e.pageY - target.offsetTop);
+                    ctx.stroke();
                     break;
-                case 'line':
+                case 'line': {
+                    let currentX = e.pageX - target.offsetLeft;
+                    let currentY = e.pageY - target.offsetTop;
+                    ctx.clearRect(0, 0, 850, 550);
+                    if (canvasData) {
+                        ctx.putImageData(canvasData, 0, 0);
+                    }
+                    ctx.beginPath();
+                    ctx.moveTo(startX, startY);
+                    ctx.lineTo(currentX, currentY);
+                    ctx.stroke();
                     break;
+                }
+                case 'clear':
+                    ctx.clearRect(0, 0, 850, 550);
+                    break;
+
                 default:
                     break;
             }
         }
     };
 
-    const onMouseUpHandler = (e: React.MouseEvent) => {
+    const onMouseUpHandler = () => {
         setIsPainting(false);
     };
 

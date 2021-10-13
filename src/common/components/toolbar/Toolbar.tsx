@@ -1,16 +1,17 @@
 import React from 'react';
 import s from './toolbar.module.css';
 import { AppRootStateType, useAppDispatch } from '../../../app/store';
-import { chooseColor, chooseLineWidth, chooseTool } from '../../../features/toolSlice';
+import { chooseFillColor, chooseLineWidth, chooseOutlineColor, chooseTool } from '../../../features/toolSlice';
 import { useSelector } from 'react-redux';
 
 const Toolbar = () => {
-    const toolsLeftBlock: string[] = ['brush', 'rect', 'circle', 'eraser', 'line'];
+    const toolsLeftBlock: string[] = ['brush', 'rect', 'circle', 'line', 'eraser', 'clear'];
     const toolsRightBlock: string[] = ['undo', 'redo', 'save'];
     const dispatch = useAppDispatch();
     const activeTool = useSelector<AppRootStateType, string>((state) => state.toolBar.activeTool);
-    const color = useSelector<AppRootStateType, string>((state) => state.toolBar.color);
     const lineWidth = useSelector<AppRootStateType, number>((state) => state.toolBar.lineWidth);
+    const outlineColor = useSelector<AppRootStateType, string>((state) => state.toolBar.outlineColor);
+    const fillColor = useSelector<AppRootStateType, string>((state) => state.toolBar.fillColor);
 
     return (
         <div className={s.toolbar}>
@@ -25,14 +26,25 @@ const Toolbar = () => {
                     );
                 })}
                 <div>
+                    <div className={s.text_input}>Line color</div>
                     <input
+                        className={s.color_input}
                         type="color"
-                        value={color}
-                        onChange={(e) => dispatch(chooseColor({ color: e.target.value }))}
+                        value={outlineColor}
+                        onChange={(e) => dispatch(chooseOutlineColor({ color: e.target.value }))}
+                    />
+                </div>
+                <div>
+                    <div className={s.text_input}>Fill color</div>
+                    <input
+                        className={s.color_input}
+                        type="color"
+                        value={fillColor}
+                        onChange={(e) => dispatch(chooseFillColor({ color: e.target.value }))}
                     />
                 </div>
                 <div className={s.toolbar_lineWidth}>
-                    <div className={s.lineWidth_text}>Line width :</div>
+                    <div className={s.text}>Line width :</div>
                     <input
                         type="number"
                         value={lineWidth}
