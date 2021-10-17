@@ -9,7 +9,6 @@ const LogInOutButton = () => {
     const dispatch = useAppDispatch();
     const onLogOutClick = () => {
         dispatch(logOutUser());
-        debugger;
     };
 
     return (

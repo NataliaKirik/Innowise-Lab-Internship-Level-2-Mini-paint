@@ -1,7 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
 import s from './canvas.module.css';
 import { useSelector } from 'react-redux';
-import { AppRootStateType } from '../../../app/store';
+import { AppRootStateType, useAppDispatch } from '../../../app/store';
+import { setDataURLCanvas } from '../../../features/canvasSlice';
 
 const Canvas = () => {
     const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -14,9 +15,13 @@ const Canvas = () => {
     const width = useSelector<AppRootStateType, number>((state) => state.toolBar.lineWidth);
     const [isPainting, setIsPainting] = useState<boolean>(false);
     const [canvasData, setCanvasData] = useState<ImageData | undefined>();
+    const dispatch = useAppDispatch();
 
     useEffect(() => {
-        canvasRef.current && setCtx(canvasRef.current.getContext('2d'));
+        if (canvasRef.current) {
+            setCtx(canvasRef.current.getContext('2d'));
+            dispatch(setDataURLCanvas({ dataURL: canvasRef.current.toDataURL() }));
+        }
     }, []);
 
     const onMouseDownHandler = (e: React.MouseEvent) => {
@@ -28,6 +33,9 @@ const Canvas = () => {
             setStartY(e.pageY - target.offsetTop);
             setIsPainting(true);
             setCanvasData(ctx.getImageData(0, 0, 850, 550));
+            if (tool === 'clear') {
+                ctx.clearRect(0, 0, 850, 550);
+            }
         }
     };
 
@@ -90,10 +98,6 @@ const Canvas = () => {
                     ctx.stroke();
                     break;
                 }
-                case 'clear':
-                    ctx.clearRect(0, 0, 850, 550);
-                    break;
-
                 default:
                     break;
             }

@@ -3,15 +3,23 @@ import s from './toolbar.module.css';
 import { AppRootStateType, useAppDispatch } from '../../../app/store';
 import { chooseFillColor, chooseLineWidth, chooseOutlineColor, chooseTool } from '../../../features/toolSlice';
 import { useSelector } from 'react-redux';
+import { saveArt } from '../../../firebase/db';
 
 const Toolbar = () => {
     const toolsLeftBlock: string[] = ['brush', 'rect', 'circle', 'line', 'eraser', 'clear'];
-    const toolsRightBlock: string[] = ['undo', 'redo', 'save'];
+    const toolsRightBlock: string[] = ['undo', 'redo'];
     const dispatch = useAppDispatch();
     const activeTool = useSelector<AppRootStateType, string>((state) => state.toolBar.activeTool);
     const lineWidth = useSelector<AppRootStateType, number>((state) => state.toolBar.lineWidth);
     const outlineColor = useSelector<AppRootStateType, string>((state) => state.toolBar.outlineColor);
     const fillColor = useSelector<AppRootStateType, string>((state) => state.toolBar.fillColor);
+    const userEmail = useSelector<AppRootStateType, string | null>((state) => state.login.userEmail);
+    const userId = useSelector<AppRootStateType, string | null>((state) => state.login.uid);
+    const canvasDataUrl = useSelector<AppRootStateType, string>((state) => state.canvas.dataURL);
+
+    const onBtnSaveClick = () => {
+        saveArt(userEmail, userId, canvasDataUrl);
+    };
 
     return (
         <div className={s.toolbar}>
@@ -71,6 +79,7 @@ const Toolbar = () => {
                         ></button>
                     );
                 })}
+                <button className={`${s.toolbar_btn} ${s.save}`} onClick={onBtnSaveClick}></button>
             </div>
         </div>
     );

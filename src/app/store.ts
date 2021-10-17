@@ -2,14 +2,16 @@ import { combineReducers } from 'redux';
 import thunkMiddleware from 'redux-thunk';
 import { configureStore } from '@reduxjs/toolkit';
 import { loginSlice } from '../features/loginSlice';
-import { paintSlice } from '../features/paintSlice';
+import { canvasSlice } from '../features/canvasSlice';
 import { toolSlice } from '../features/toolSlice';
 import { useDispatch } from 'react-redux';
+import { gallerySlice } from '../features/gallerySlice';
 
 const rootReducer = combineReducers({
     login: loginSlice,
-    paint: paintSlice,
+    canvas: canvasSlice,
     toolBar: toolSlice,
+    gallery: gallerySlice,
 });
 
 const store = configureStore({
