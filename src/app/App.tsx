@@ -8,6 +8,7 @@ import Header from '../common/components/header/Header';
 import { Register } from '../pages/register/ui/Register';
 import s from './app.module.css';
 import { SimpleSnackbar } from '../common/components/errorSnackBar/ErrorSnackbar';
+import Preloader from '../common/components/preloader/Preloader';
 
 function App() {
     return (
@@ -21,6 +22,7 @@ function App() {
                     <Route path={PATH.PAINT} render={() => <Paint />} />
                 </Switch>
                 <SimpleSnackbar />
+                <Preloader />
             </HashRouter>
         </div>
     );

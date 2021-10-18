@@ -9,7 +9,7 @@ import { useEffect } from 'react';
 export function SimpleSnackbar() {
     const [open, setOpen] = React.useState(false);
     const [message, setMessage] = React.useState('');
-    const errorMessage = useSelector<AppRootStateType, string | null>((state) => state.login.errorText);
+    const errorMessage = useSelector<AppRootStateType, string | null>((state) => state.app.error);
 
     useEffect(() => {
         if (errorMessage) {

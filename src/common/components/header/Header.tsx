@@ -31,7 +31,7 @@ function Header() {
                     </li>
                 </ul>
             </div>
-            <div className={s.signIn}>
+            <div className={s.logOutBtn}>
                 <LogInOutButton />
             </div>
         </div>
