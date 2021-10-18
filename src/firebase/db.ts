@@ -1,4 +1,4 @@
-import { addDoc, collection, getDocs, getFirestore } from 'firebase/firestore';
+import { addDoc, collection, getFirestore } from 'firebase/firestore';
 
 export const db = getFirestore();
 
@@ -8,12 +8,5 @@ export const saveArt = async (userEmail: string | null, userId: string | null, c
         userEmail,
         userId,
         canvasDataUrl,
-    });
-};
-
-export const getArtCollection = async () => {
-    const querySnapshot = await getDocs(collection(db, 'artCollection'));
-    querySnapshot.forEach((doc) => {
-        console.log(doc.id, ' => ', doc.data());
     });
 };

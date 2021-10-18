@@ -1,13 +1,16 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { collection, getDocs, query, where } from 'firebase/firestore';
 import { db } from '../firebase/db';
+import { startLoading, stopLoading } from './appSlice';
 
 export const getUsers = createAsyncThunk('gallerySlice/getUsers', async (_, thunkAPI) => {
+    thunkAPI.dispatch(startLoading('loading'));
     return getDocs(query(collection(db, 'artCollection')))
         .then(({ docs }) => {
             return docs.map((user) => user.data());
         })
         .then((users) => {
+            thunkAPI.dispatch(stopLoading('idle'));
             return users.map((u) => {
                 return u.userEmail;
             });
@@ -15,8 +18,10 @@ export const getUsers = createAsyncThunk('gallerySlice/getUsers', async (_, thun
 });
 
 export const getImages = createAsyncThunk('gallery/getImages', async (userEmail: string, thunkAPI) => {
+    thunkAPI.dispatch(startLoading('loading'));
     let q = query(collection(db, 'artCollection'));
     if (userEmail) {
+        thunkAPI.dispatch(stopLoading('idle'));
         q = query(collection(db, 'artCollection'), where('userEmail', '==', userEmail));
     }
     return getDocs(q)
@@ -24,6 +29,7 @@ export const getImages = createAsyncThunk('gallery/getImages', async (userEmail:
             return data.docs;
         })
         .then((images) => {
+            thunkAPI.dispatch(stopLoading('idle'));
             return images.map((img) => {
                 return {
                     id: img.id,

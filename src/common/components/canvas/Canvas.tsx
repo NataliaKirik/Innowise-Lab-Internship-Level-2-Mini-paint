@@ -16,10 +16,15 @@ const Canvas = () => {
     const [isPainting, setIsPainting] = useState<boolean>(false);
     const [canvasData, setCanvasData] = useState<ImageData | undefined>();
     const dispatch = useAppDispatch();
+    const [undoList, setUndoList] = useState<any[]>([]);
+    const [redoList, setRedoList] = useState<any[]>([]);
 
     useEffect(() => {
         if (canvasRef.current) {
             setCtx(canvasRef.current.getContext('2d'));
+        }
+        if (canvasRef.current) {
+            dispatch(setDataURLCanvas({ dataURL: canvasRef.current.toDataURL() }));
         }
     }, []);
 
@@ -35,6 +40,9 @@ const Canvas = () => {
             if (tool === 'clear') {
                 ctx.clearRect(0, 0, 850, 550);
             }
+        }
+        if (canvasRef.current) {
+            setUndoList([...undoList, canvasRef.current.toDataURL()]);
         }
     };
 
@@ -105,7 +113,36 @@ const Canvas = () => {
 
     const onMouseUpHandler = () => {
         setIsPainting(false);
-        canvasRef.current && dispatch(setDataURLCanvas({ dataURL: canvasRef.current.toDataURL() }));
+        if (canvasRef.current && canvasRef.current.toDataURL()) {
+            dispatch(setDataURLCanvas({ dataURL: canvasRef.current.toDataURL() }));
+        }
+    };
+
+    const undo = () => {
+        if (undoList.length > 0) {
+            let dataUrl = undoList.pop();
+            redoList.push(canvasRef.current!.toDataURL());
+            let img = new Image();
+            img.src = dataUrl;
+            img.onload = () => {
+                ctx!.clearRect(0, 0, 850, 550);
+                ctx!.drawImage(img, 0, 0, 850, 550);
+            };
+        } else {
+            ctx!.clearRect(0, 0, 850, 550);
+        }
+    };
+    const redo = () => {
+        if (redoList.length > 0) {
+            let dataUrl = redoList.pop();
+            undoList.push(canvasRef.current!.toDataURL());
+            let img = new Image();
+            img.src = dataUrl;
+            img.onload = () => {
+                ctx!.clearRect(0, 0, 850, 550);
+                ctx!.drawImage(img, 0, 0, 850, 550);
+            };
+        }
     };
 
     return (
@@ -118,6 +155,8 @@ const Canvas = () => {
                 width="850px"
                 height="550px"
             />
+            <button onClick={undo}>undo</button>
+            <button onClick={redo}>redo</button>
         </div>
     );
 };
