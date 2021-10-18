@@ -20,7 +20,6 @@ const Canvas = () => {
     useEffect(() => {
         if (canvasRef.current) {
             setCtx(canvasRef.current.getContext('2d'));
-            dispatch(setDataURLCanvas({ dataURL: canvasRef.current.toDataURL() }));
         }
     }, []);
 
@@ -106,6 +105,7 @@ const Canvas = () => {
 
     const onMouseUpHandler = () => {
         setIsPainting(false);
+        canvasRef.current && dispatch(setDataURLCanvas({ dataURL: canvasRef.current.toDataURL() }));
     };
 
     return (

@@ -1,10 +1,10 @@
-import { addDoc, collection, doc, getDoc, getDocs, getFirestore } from 'firebase/firestore';
+import { addDoc, collection, getDocs, getFirestore } from 'firebase/firestore';
 
 export const db = getFirestore();
 
 export const saveArt = async (userEmail: string | null, userId: string | null, canvasDataUrl: string) => {
     const artRef = collection(db, 'artCollection');
-    const art = await addDoc(artRef, {
+    await addDoc(artRef, {
         userEmail,
         userId,
         canvasDataUrl,

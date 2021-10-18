@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { collection, getDocs, query } from 'firebase/firestore';
+import { collection, getDocs, query, where } from 'firebase/firestore';
 import { db } from '../firebase/db';
 
 export const getUsers = createAsyncThunk('gallerySlice/getUsers', async (_, thunkAPI) => {
@@ -14,9 +14,29 @@ export const getUsers = createAsyncThunk('gallerySlice/getUsers', async (_, thun
         });
 });
 
+export const getImages = createAsyncThunk('gallery/getImages', async (userEmail: string, thunkAPI) => {
+    let q = query(collection(db, 'artCollection'));
+    if (userEmail) {
+        q = query(collection(db, 'artCollection'), where('userEmail', '==', userEmail));
+    }
+    return getDocs(q)
+        .then((data) => {
+            return data.docs;
+        })
+        .then((images) => {
+            return images.map((img) => {
+                return {
+                    id: img.id,
+                    image: img.data().canvasDataUrl,
+                };
+            });
+        });
+});
+
 const initialState: InitialStateType = {
     usersEmail: [],
     selectedUser: '',
+    images: [],
 };
 
 const slice = createSlice({
@@ -31,6 +51,9 @@ const slice = createSlice({
         builder.addCase(getUsers.fulfilled, (state: InitialStateType, action: any) => {
             state.usersEmail = action.payload;
         });
+        builder.addCase(getImages.fulfilled, (state: InitialStateType, action: any) => {
+            state.images = action.payload;
+        });
     },
 });
 
@@ -41,4 +64,9 @@ export const { setSelectedUser } = slice.actions;
 type InitialStateType = {
     usersEmail: [];
     selectedUser: string;
+    images: ImgType[];
+};
+export type ImgType = {
+    id: string;
+    image: string;
 };
