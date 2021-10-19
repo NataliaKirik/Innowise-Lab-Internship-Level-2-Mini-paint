@@ -1,0 +1,4 @@
+.mainPaintContainer {
+    border: 2px solid yellow;
+    display: flex;
+}

@@ -23,8 +23,8 @@ const Canvas = () => {
     const [isPainting, setIsPainting] = useState<boolean>(false);
     const [canvasData, setCanvasData] = useState<ImageData | undefined>();
     const dispatch = useAppDispatch();
-    const [undoList, setUndoList] = useState<any[]>([]);
-    const [redoList, setRedoList] = useState<any[]>([]);
+    const [undoList, setUndoList] = useState<string[]>([]);
+    const [redoList, setRedoList] = useState<string[]>([]);
 
     useEffect(() => {
         if (canvasRef.current) {
@@ -40,9 +40,9 @@ const Canvas = () => {
             setStartX(e.pageX - target.offsetLeft);
             setStartY(e.pageY - target.offsetTop);
             setIsPainting(true);
-            setCanvasData(ctx.getImageData(0, 0, 850, 550));
+            setCanvasData(ctx.getImageData(0, 0, canvasRef.current!.width, canvasRef.current!.height));
             if (tool === 'clear') {
-                ctx.clearRect(0, 0, 850, 550);
+                ctx.clearRect(0, 0, canvasRef.current!.width, canvasRef.current!.height);
             }
         }
         if (canvasRef.current) {
@@ -66,7 +66,7 @@ const Canvas = () => {
                     let currentY = e.pageY - target.offsetTop;
                     let width = currentX - startX;
                     let height = currentY - startY;
-                    ctx.clearRect(0, 0, 850, 550);
+                    ctx.clearRect(0, 0, canvasRef.current!.width, canvasRef.current!.height);
                     if (canvasData) {
                         ctx.putImageData(canvasData, 0, 0);
                     }
@@ -81,7 +81,7 @@ const Canvas = () => {
                     let width = currentX - startX;
                     let height = currentY - startY;
                     let r = Math.sqrt(width ** 2 + height ** 2);
-                    ctx.clearRect(0, 0, 850, 550);
+                    ctx.clearRect(0, 0, canvasRef.current!.width, canvasRef.current!.height);
                     if (canvasData) {
                         ctx.putImageData(canvasData, 0, 0);
                     }
@@ -99,7 +99,7 @@ const Canvas = () => {
                 case 'line': {
                     let currentX = e.pageX - target.offsetLeft;
                     let currentY = e.pageY - target.offsetTop;
-                    ctx.clearRect(0, 0, 850, 550);
+                    ctx.clearRect(0, 0, canvasRef.current!.width, canvasRef.current!.height);
                     if (canvasData) {
                         ctx.putImageData(canvasData, 0, 0);
                     }
@@ -124,13 +124,15 @@ const Canvas = () => {
             let dataUrl = undoList.pop();
             redoList.push(canvasRef.current!.toDataURL());
             let img = new Image();
-            img.src = dataUrl;
+            if (typeof dataUrl === 'string') {
+                img.src = dataUrl;
+            }
             img.onload = () => {
-                ctx!.clearRect(0, 0, 850, 550);
-                ctx!.drawImage(img, 0, 0, 850, 550);
+                ctx!.clearRect(0, 0, canvasRef.current!.width, canvasRef.current!.height);
+                ctx!.drawImage(img, 0, 0, canvasRef.current!.width, canvasRef.current!.height);
             };
         } else {
-            ctx!.clearRect(0, 0, 850, 550);
+            ctx!.clearRect(0, 0, canvasRef.current!.width, canvasRef.current!.height);
         }
     };
     const redo = () => {
@@ -138,10 +140,12 @@ const Canvas = () => {
             let dataUrl = redoList.pop();
             undoList.push(canvasRef.current!.toDataURL());
             let img = new Image();
-            img.src = dataUrl;
+            if (typeof dataUrl === 'string') {
+                img.src = dataUrl;
+            }
             img.onload = () => {
-                ctx!.clearRect(0, 0, 850, 550);
-                ctx!.drawImage(img, 0, 0, 850, 550);
+                ctx!.clearRect(0, 0, canvasRef.current!.width, canvasRef.current!.height);
+                ctx!.drawImage(img, 0, 0, canvasRef.current!.width, canvasRef.current!.height);
             };
         }
     };
@@ -159,8 +163,8 @@ const Canvas = () => {
                 onMouseDown={onMouseDownHandler}
                 onMouseMove={onMouseMoveHandler}
                 onMouseUp={onMouseUpHandler}
-                width="850px"
-                height="550px"
+                width="950px"
+                height="570px"
             />
             <div className={s.buttonsContainer}>
                 <IconButton color="primary" className={s.button} onClick={undo}>

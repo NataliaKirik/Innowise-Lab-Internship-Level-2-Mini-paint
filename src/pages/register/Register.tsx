@@ -2,13 +2,13 @@ import React from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { Button, TextField } from '@mui/material';
 import { ErrorMessage } from '@hookform/error-message';
-import { Inputs } from '../../../common/components/form/types';
-import s from '../../../common/components/form/form.module.css';
+import { Inputs } from '../../common/components/form/types';
+import s from '../../common/components/form/form.module.css';
 import { useSelector } from 'react-redux';
-import { createUser } from '../../../features/loginSlice';
-import { AppRootStateType, useAppDispatch } from '../../../app/store';
+import { createUser } from '../../features/loginSlice';
+import { AppRootStateType, useAppDispatch } from '../../app/store';
 import { Redirect } from 'react-router-dom';
-import { PATH } from '../../../common/constants/routes';
+import { PATH } from '../../common/constants/routes';
 
 export function Register() {
     const dispatch = useAppDispatch();

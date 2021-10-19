@@ -14,51 +14,49 @@ const Toolbar = () => {
 
     return (
         <div className={s.toolbar}>
-            <div className={s.toolbar_leftBlock}>
-                {toolsLeftBlock.map((name) => {
-                    return (
-                        <button
-                            key={name}
-                            className={`${s.toolbar_btn} ${s[name]}  ${activeTool === name ? s.activeBtn : ''}`}
-                            onClick={() => dispatch(chooseTool({ activeTool: name }))}
-                        ></button>
-                    );
-                })}
-                <div>
-                    <div className={s.text_input}>Line color</div>
-                    <input
-                        className={s.color_input}
-                        type="color"
-                        value={outlineColor}
-                        onChange={(e) => dispatch(chooseOutlineColor({ color: e.target.value }))}
-                    />
-                </div>
-                <div>
-                    <div className={s.text_input}>Fill color</div>
-                    <input
-                        className={s.color_input}
-                        type="color"
-                        value={fillColor}
-                        onChange={(e) => dispatch(chooseFillColor({ color: e.target.value }))}
-                    />
-                </div>
-                <div className={s.toolbar_lineWidth}>
-                    <div className={s.text}>Line width :</div>
-                    <input
-                        type="number"
-                        value={lineWidth}
-                        min={1}
-                        max={50}
-                        className={s.lineWidth_input}
-                        onChange={(e) =>
-                            dispatch(
-                                chooseLineWidth({
-                                    lineWidth: e.target.value,
-                                }),
-                            )
-                        }
-                    />
-                </div>
+            {toolsLeftBlock.map((name) => {
+                return (
+                    <button
+                        key={name}
+                        className={`${s.toolbar_btn} ${s[name]}  ${activeTool === name ? s.activeBtn : ''}`}
+                        onClick={() => dispatch(chooseTool({ activeTool: name }))}
+                    ></button>
+                );
+            })}
+            <div className={s.colorContainer}>
+                <div className={s.text}>Line color</div>
+                <input
+                    className={s.color_input}
+                    type="color"
+                    value={outlineColor}
+                    onChange={(e) => dispatch(chooseOutlineColor({ color: e.target.value }))}
+                />
+            </div>
+            <div className={s.colorContainer}>
+                <div className={s.text}>Fill color</div>
+                <input
+                    className={s.color_input}
+                    type="color"
+                    value={fillColor}
+                    onChange={(e) => dispatch(chooseFillColor({ color: e.target.value }))}
+                />
+            </div>
+            <div className={s.toolbar_lineWidth}>
+                <div className={s.text}>Line width</div>
+                <input
+                    type="number"
+                    value={lineWidth}
+                    min={1}
+                    max={50}
+                    className={s.lineWidth_input}
+                    onChange={(e) =>
+                        dispatch(
+                            chooseLineWidth({
+                                lineWidth: e.target.value,
+                            }),
+                        )
+                    }
+                />
             </div>
         </div>
     );

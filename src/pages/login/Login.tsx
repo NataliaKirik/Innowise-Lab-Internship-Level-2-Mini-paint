@@ -2,13 +2,13 @@ import React from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { Button, TextField } from '@mui/material';
 import { ErrorMessage } from '@hookform/error-message';
-import { Inputs } from '../../../common/components/form/types';
-import s from '../../../common/components/form/form.module.css';
+import { Inputs } from '../../common/components/form/types';
+import s from '../../common/components/form/form.module.css';
 import { NavLink, Redirect } from 'react-router-dom';
-import { PATH } from '../../../common/constants/routes';
+import { PATH } from '../../common/constants/routes';
 import { useSelector } from 'react-redux';
-import { authUser } from '../../../features/loginSlice';
-import { AppRootStateType, useAppDispatch } from '../../../app/store';
+import { authUser } from '../../features/loginSlice';
+import { AppRootStateType, useAppDispatch } from '../../app/store';
 
 export function Login() {
     const dispatch = useAppDispatch();
