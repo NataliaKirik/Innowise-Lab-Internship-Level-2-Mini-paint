@@ -3,22 +3,29 @@ import { NavLink } from 'react-router-dom';
 import { PATH } from '../../constants/routes';
 import s from './header.module.css';
 import LogInOutButton from '../logInOutButton/logInOutButton';
+import { useSelector } from 'react-redux';
+import { AppRootStateType } from '../../../app/store';
 
 function Header() {
+    const isAuth = useSelector<AppRootStateType, boolean>((state) => state.login.isAuth);
     return (
         <div className={s.header}>
             <div className={s.menuWrapper}>
                 <ul className={s.menu}>
-                    <li>
-                        <NavLink to={PATH.LOGIN} activeClassName={s.active}>
-                            Login
-                        </NavLink>
-                    </li>
-                    <li>
-                        <NavLink to={PATH.REGISTER} activeClassName={s.active}>
-                            Register
-                        </NavLink>
-                    </li>
+                    {isAuth || (
+                        <>
+                            <li>
+                                <NavLink to={PATH.LOGIN} activeClassName={s.active}>
+                                    Login
+                                </NavLink>
+                            </li>
+                            <li>
+                                <NavLink to={PATH.REGISTER} activeClassName={s.active}>
+                                    Register
+                                </NavLink>
+                            </li>
+                        </>
+                    )}
                     <li>
                         <NavLink to={PATH.GALLERY} activeClassName={s.active}>
                             Gallery

@@ -43,7 +43,7 @@ export const Gallery = () => {
                 // isOptionEqualToValue={(option, value) => option.label === value.label}
                 className={s.inputSelect}
             />
-            <div>
+            <div className={s.imgWrapper}>
                 {images.map((img) => (
                     <img src={img.image} alt={img.id} className={s.img} key={img.id} />
                 ))}

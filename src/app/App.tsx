@@ -6,7 +6,6 @@ import { Gallery } from '../pages/gallery/Gallery';
 import { Paint } from '../pages/paint/Paint';
 import Header from '../common/components/header/Header';
 import { Register } from '../pages/register/Register';
-import s from './app.module.css';
 import { SimpleSnackbar } from '../common/components/errorSnackBar/ErrorSnackbar';
 import Preloader from '../common/components/preloader/Preloader';
 
