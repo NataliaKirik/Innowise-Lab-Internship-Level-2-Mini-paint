@@ -6,7 +6,7 @@
     background-size: cover;
     justify-content: space-between;
     padding: 0 7%;
-    background: #f7fdf5;
+    background: var(--color-milk);
     height: 6vh;
     box-shadow: 0 1px 2px rgb(171, 171, 171);
 }
@@ -70,7 +70,7 @@
     right: 50%;
     bottom: -5px;
     left: 50%;
-    color:  var(--color-blue);
+    color: var(--color-blue);
     opacity: 1;
 }
 

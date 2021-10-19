@@ -2,13 +2,20 @@ import React, { useEffect, useRef, useState } from 'react';
 import s from './canvas.module.css';
 import { useSelector } from 'react-redux';
 import { AppRootStateType, useAppDispatch } from '../../../app/store';
-import { setDataURLCanvas } from '../../../features/canvasSlice';
+import IconButton from '@mui/material/IconButton';
+import UndoIcon from '@mui/icons-material/Undo';
+import RedoIcon from '@mui/icons-material/Redo';
+import SaveIcon from '@mui/icons-material/Save';
+import { startLoading, stopLoading } from '../../../features/appSlice';
+import { saveArt } from '../../../firebase/db';
 
 const Canvas = () => {
     const canvasRef = useRef<HTMLCanvasElement | null>(null);
     const [ctx, setCtx] = useState<CanvasRenderingContext2D | null>(null);
     const [startX, setStartX] = useState<number>(0);
     const [startY, setStartY] = useState<number>();
+    const userEmail = useSelector<AppRootStateType, string | null>((state) => state.login.userEmail);
+    const userId = useSelector<AppRootStateType, string | null>((state) => state.login.uid);
     const tool = useSelector<AppRootStateType, string>((state) => state.toolBar.activeTool);
     const outlineColor = useSelector<AppRootStateType, string>((state) => state.toolBar.outlineColor);
     const fillColor = useSelector<AppRootStateType, string>((state) => state.toolBar.fillColor);
@@ -22,9 +29,6 @@ const Canvas = () => {
     useEffect(() => {
         if (canvasRef.current) {
             setCtx(canvasRef.current.getContext('2d'));
-        }
-        if (canvasRef.current) {
-            dispatch(setDataURLCanvas({ dataURL: canvasRef.current.toDataURL() }));
         }
     }, []);
 
@@ -113,9 +117,6 @@ const Canvas = () => {
 
     const onMouseUpHandler = () => {
         setIsPainting(false);
-        if (canvasRef.current && canvasRef.current.toDataURL()) {
-            dispatch(setDataURLCanvas({ dataURL: canvasRef.current.toDataURL() }));
-        }
     };
 
     const undo = () => {
@@ -144,9 +145,15 @@ const Canvas = () => {
             };
         }
     };
+    const save = () => {
+        dispatch(startLoading('loading'));
+        saveArt(userEmail, userId, canvasRef.current!.toDataURL()).then(() => {
+            dispatch(stopLoading('idle'));
+        });
+    };
 
     return (
-        <div className={s.canvas}>
+        <div className={s.mainWrapper}>
             <canvas
                 ref={canvasRef}
                 onMouseDown={onMouseDownHandler}
@@ -155,8 +162,17 @@ const Canvas = () => {
                 width="850px"
                 height="550px"
             />
-            <button onClick={undo}>undo</button>
-            <button onClick={redo}>redo</button>
+            <div className={s.buttonsContainer}>
+                <IconButton color="primary" className={s.button} onClick={undo}>
+                    <UndoIcon fontSize={'large'} />
+                </IconButton>
+                <IconButton color="primary" className={s.button} onClick={redo}>
+                    <RedoIcon fontSize={'large'} />
+                </IconButton>
+                <IconButton color="primary" className={s.button} onClick={save}>
+                    <SaveIcon fontSize={'large'} />
+                </IconButton>
+            </div>
         </div>
     );
 };
