@@ -2,7 +2,7 @@
 
 [Task link](https://docs.google.com/document/d/1K79_NA4lMYfqQiIJGqLDek1K9z-oc2qg8n4AvrN1PXE/edit)
 
-[Demo on gh-pages](https://docs.google.com/document/d/1K79_NA4lMYfqQiIJGqLDek1K9z-oc2qg8n4AvrN1PXE/edit)
+[Demo on gh-pages](https://NataliaKirik.github.io/Innowise-Lab-Internship-Level-2-Mini-paint)
 
 ## 2.How to run the app
 
