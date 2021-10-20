@@ -1,5 +1,5 @@
 import React from 'react';
-import s from './toolbar.module.css';
+import s from './toolbar.module.scss';
 import { AppRootStateType, useAppDispatch } from '../../../app/store';
 import { chooseFillColor, chooseLineWidth, chooseOutlineColor, chooseTool } from '../../../features/toolSlice';
 import { useSelector } from 'react-redux';
@@ -18,15 +18,15 @@ const Toolbar = () => {
                 return (
                     <button
                         key={name}
-                        className={`${s.toolbar_btn} ${s[name]}  ${activeTool === name ? s.activeBtn : ''}`}
+                        className={`${s[name]}  ${activeTool === name ? s.activeBtn : ''}`}
                         onClick={() => dispatch(chooseTool({ activeTool: name }))}
-                    ></button>
+                    />
                 );
             })}
+
             <div className={s.colorContainer}>
                 <div className={s.text}>Line color</div>
                 <input
-                    className={s.color_input}
                     type="color"
                     value={outlineColor}
                     onChange={(e) => dispatch(chooseOutlineColor({ color: e.target.value }))}
@@ -35,20 +35,19 @@ const Toolbar = () => {
             <div className={s.colorContainer}>
                 <div className={s.text}>Fill color</div>
                 <input
-                    className={s.color_input}
                     type="color"
                     value={fillColor}
                     onChange={(e) => dispatch(chooseFillColor({ color: e.target.value }))}
                 />
             </div>
-            <div className={s.toolbar_lineWidth}>
+
+            <div className={s.lineWidthContainer}>
                 <div className={s.text}>Line width</div>
                 <input
                     type="number"
                     value={lineWidth}
                     min={1}
                     max={50}
-                    className={s.lineWidth_input}
                     onChange={(e) =>
                         dispatch(
                             chooseLineWidth({

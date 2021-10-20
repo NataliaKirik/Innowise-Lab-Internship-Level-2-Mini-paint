@@ -1,0 +1,107 @@
+@import '../../constants/style/colors.scss';
+@import '../../constants/style/fonts.scss';
+
+
+@mixin button-background($property) {
+    background: url($property) no-repeat center center;
+    background-size: 30px 30px;
+}
+
+.toolbar {
+    background: $floralwhite;
+    box-shadow: 0 1px 2px $shadow;
+    display: flex;
+    flex-direction: column;
+    margin-top: 20px;
+    justify-content: space-evenly;
+    align-items: center;
+    position: absolute;
+    left: 9%;
+    height: 570px;
+    width: 4%;
+
+    button {
+        height: 34px;
+        width: 34px;
+        outline: none;
+        cursor: pointer;
+        border: none;
+        background-size: cover;
+    }
+
+    .activeBtn {
+        outline: #8684f8 3px solid;
+    }
+
+    .brush {
+        @include button-background("../../../assets/img/brush.png");
+    }
+
+    .rect {
+        @include button-background("../../../assets/img/rect.png");
+    }
+
+    .circle {
+        @include button-background("../../../assets/img/circle.png");
+    }
+
+    .eraser {
+        @include button-background("../../../assets/img/eraser.png");
+    }
+
+    .line {
+        @include button-background("../../../assets/img/line.png");
+    }
+
+    .clear {
+        @include button-background("../../../assets/img/clear.png");
+    }
+
+    .text {
+        text-decoration: none;
+        font-family: $mainFontFamily;
+        font-size: 14px;
+        font-weight: bold;
+        margin: 2px;
+    }
+
+    .colorContainer {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+
+        input {
+            width: 35px;
+            height: 30px;
+        }
+    }
+
+    .lineWidthContainer {
+        display: flex;
+        flex-direction: column;
+        height: 12%;
+
+        input {
+            outline: none;
+            padding: 0;
+            margin: 3px;
+            height: 90%;
+            text-indent: 10px;
+            display: inline-block;
+            box-sizing: border-box;
+            font-size: 100%;
+            font-family: $mainFontFamily;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        input:focus {
+            outline: 2px solid #8684f8;
+        }
+    }
+
+
+}
+
+

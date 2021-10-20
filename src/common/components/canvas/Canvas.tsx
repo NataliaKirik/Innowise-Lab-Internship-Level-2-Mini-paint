@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import s from './canvas.module.css';
+import s from './canvas.module.scss';
 import { useSelector } from 'react-redux';
 import { AppRootStateType, useAppDispatch } from '../../../app/store';
 import IconButton from '@mui/material/IconButton';
@@ -24,7 +24,7 @@ const Canvas = () => {
     const [canvasData, setCanvasData] = useState<ImageData | undefined>();
     const dispatch = useAppDispatch();
     const [undoList, setUndoList] = useState<string[]>([]);
-    const [redoList, setRedoList] = useState<string[]>([]);
+    const redoList: string[] = [];
 
     useEffect(() => {
         if (canvasRef.current) {

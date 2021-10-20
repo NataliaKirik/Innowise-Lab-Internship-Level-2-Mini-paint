@@ -14,8 +14,6 @@ export function Login() {
     const dispatch = useAppDispatch();
     const isLoggedIn = useSelector<AppRootStateType, boolean>((state) => state.login.isAuth);
 
-    if (isLoggedIn) return <Redirect to={PATH.PAINT} />;
-
     const onSubmit: SubmitHandler<Inputs> = (data) => {
         dispatch(
             authUser({
@@ -36,6 +34,8 @@ export function Login() {
         },
         mode: 'onChange',
     });
+
+    if (isLoggedIn) return <Redirect to={PATH.PAINT} />;
 
     return (
         <div className={s.formContainer}>
