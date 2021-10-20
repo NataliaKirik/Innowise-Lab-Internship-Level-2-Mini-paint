@@ -1,5 +1,6 @@
 @import url('https://fonts.googleapis.com/css?family=Ubuntu+Condensed');
 @import '../../constants/style/colors.scss';
+@import '../../constants/style/fonts.scss';
 
 .header {
   display: flex;
@@ -35,7 +36,7 @@
 
     a {
       text-decoration: none;
-      font-family: 'Ubuntu Condensed', sans-serif;
+      font-family: $mainFontFamily;
       letter-spacing: 2px;
       padding-bottom: 10px;
       margin: 0 34px 0 30px;
@@ -74,5 +75,5 @@
 
 
 .logOutBtn {
-  padding: 6px 0;
+  padding: 4px 0;
 }

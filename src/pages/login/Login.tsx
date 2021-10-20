@@ -3,7 +3,7 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { Button, TextField } from '@mui/material';
 import { ErrorMessage } from '@hookform/error-message';
 import { Inputs } from '../../common/components/form/types';
-import s from '../../common/components/form/form.module.css';
+import s from '../../common/components/form/form.module.scss';
 import { NavLink, Redirect } from 'react-router-dom';
 import { PATH } from '../../common/constants/routes';
 import { useSelector } from 'react-redux';
@@ -12,6 +12,10 @@ import { AppRootStateType, useAppDispatch } from '../../app/store';
 
 export function Login() {
     const dispatch = useAppDispatch();
+    const isLoggedIn = useSelector<AppRootStateType, boolean>((state) => state.login.isAuth);
+
+    if (isLoggedIn) return <Redirect to={PATH.PAINT} />;
+
     const onSubmit: SubmitHandler<Inputs> = (data) => {
         dispatch(
             authUser({
@@ -20,7 +24,6 @@ export function Login() {
             }),
         );
     };
-    const isLoggedIn = useSelector<AppRootStateType, boolean>((state) => state.login.isAuth);
 
     const {
         register,
@@ -34,11 +37,9 @@ export function Login() {
         mode: 'onChange',
     });
 
-    if (isLoggedIn) return <Redirect to={PATH.PAINT} />;
-
     return (
         <div className={s.formContainer}>
-            <form onSubmit={handleSubmit(onSubmit)} className={s.form}>
+            <form onSubmit={handleSubmit(onSubmit)}>
                 <div className={s.text}>Email</div>
                 <TextField
                     {...register('email', {
@@ -54,7 +55,7 @@ export function Login() {
                     color={'primary'}
                     label={'email'}
                     variant={'outlined'}
-                    className={s.input}
+                    className={s.textField}
                     autoComplete={'off'}
                 />
                 <ErrorMessage
@@ -82,7 +83,7 @@ export function Login() {
                     color={'primary'}
                     label={'password'}
                     variant={'outlined'}
-                    className={s.input}
+                    className={s.textField}
                     type="password"
                 />
                 <ErrorMessage
@@ -90,18 +91,15 @@ export function Login() {
                     name="password"
                     render={({ message }) => <div className={s.error}>{message}</div>}
                 />
-                <div className={s.button}>
-                    <Button variant={'contained'} type={'submit'}>
-                        Log in
-                    </Button>
-                </div>
+
+                <Button variant={'contained'} type={'submit'}>
+                    Log in
+                </Button>
 
                 <div className={s.blockRegistration}>
                     <div className={s.regText}>Don't have an account?</div>
                     <div>
-                        <NavLink to={PATH.REGISTER} className={s.regLink}>
-                            Registration
-                        </NavLink>
+                        <NavLink to={PATH.REGISTER}>Registration</NavLink>
                     </div>
                 </div>
             </form>

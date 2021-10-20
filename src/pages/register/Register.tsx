@@ -3,7 +3,7 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { Button, TextField } from '@mui/material';
 import { ErrorMessage } from '@hookform/error-message';
 import { Inputs } from '../../common/components/form/types';
-import s from '../../common/components/form/form.module.css';
+import s from '../../common/components/form/form.module.scss';
 import { useSelector } from 'react-redux';
 import { createUser } from '../../features/loginSlice';
 import { AppRootStateType, useAppDispatch } from '../../app/store';
@@ -13,6 +13,7 @@ import { PATH } from '../../common/constants/routes';
 export function Register() {
     const dispatch = useAppDispatch();
     const isLoggedIn = useSelector<AppRootStateType, boolean>((state) => state.login.isAuth);
+
     const {
         watch,
         register,
@@ -36,9 +37,10 @@ export function Register() {
     };
 
     if (isLoggedIn) return <Redirect to={PATH.PAINT} />;
+
     return (
         <div className={s.formContainer}>
-            <form onSubmit={handleSubmit(onSubmit)} className={s.form}>
+            <form onSubmit={handleSubmit(onSubmit)}>
                 <div className={s.text}>Email</div>
                 <TextField
                     {...register('email', {
@@ -54,7 +56,7 @@ export function Register() {
                     color={'primary'}
                     label={'email'}
                     variant={'outlined'}
-                    className={s.input}
+                    className={s.textField}
                     autoComplete={'off'}
                 />
                 <ErrorMessage
@@ -82,7 +84,7 @@ export function Register() {
                     color={'primary'}
                     label={'password'}
                     variant={'outlined'}
-                    className={s.input}
+                    className={s.textField}
                     type="password"
                 />
                 <ErrorMessage
@@ -99,7 +101,7 @@ export function Register() {
                     color={'primary'}
                     label={'password'}
                     variant={'outlined'}
-                    className={s.input}
+                    className={s.textField}
                     type="password"
                 />
                 <ErrorMessage
@@ -108,11 +110,9 @@ export function Register() {
                     render={({ message }) => <div className={s.error}>{message}</div>}
                 />
 
-                <div className={s.button}>
-                    <Button variant={'contained'} type={'submit'}>
-                        Registration
-                    </Button>
-                </div>
+                <Button variant={'contained'} type={'submit'}>
+                    Registration
+                </Button>
             </form>
         </div>
     );
