@@ -1,7 +1,7 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { PATH } from '../../constants/routes';
-import s from './header.module.css';
+import s from './header.module.scss';
 import LogInOutButton from '../logInOutButton/logInOutButton';
 import { useSelector } from 'react-redux';
 import { AppRootStateType } from '../../../app/store';
@@ -10,8 +10,8 @@ function Header() {
     const isAuth = useSelector<AppRootStateType, boolean>((state) => state.login.isAuth);
     return (
         <div className={s.header}>
-            <div className={s.menuWrapper}>
-                <ul className={s.menu}>
+            <div className={s.menu}>
+                <ul>
                     {isAuth || (
                         <>
                             <li>

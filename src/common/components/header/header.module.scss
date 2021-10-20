@@ -1,0 +1,78 @@
+@import url('https://fonts.googleapis.com/css?family=Ubuntu+Condensed');
+@import '../../constants/style/colors.scss';
+
+.header {
+  display: flex;
+  background-size: cover;
+  justify-content: space-between;
+  background: $floralwhite;
+  padding: 0 6%;
+  height: 6vh;
+  box-shadow: 0 1px 2px $shadow;
+}
+
+.menu {
+  ul {
+    list-style: none;
+    text-align: center;
+    opacity: 0.8;
+    margin-top: 7px;
+
+    li {
+      display: inline-block;
+    }
+
+    li:after {
+      content: "|";
+      color: #606060;
+      display: inline-block;
+      vertical-align: top;
+    }
+
+    li:last-child:after {
+      content: none;
+    }
+
+    a {
+      text-decoration: none;
+      font-family: 'Ubuntu Condensed', sans-serif;
+      letter-spacing: 2px;
+      padding-bottom: 10px;
+      margin: 0 34px 0 30px;
+      font-size: 19px;
+      text-transform: uppercase;
+      display: inline-block;
+      font-weight: bold;
+      color: $blue;
+      opacity: 1;
+    }
+
+    a.active {
+      border-bottom: rgba(75, 63, 59, 0.95) 5px solid;
+      opacity: 1;
+    }
+
+    a.current, a:hover {
+      color: #6667af;
+      opacity: 1;
+    }
+
+    a:before,
+    a:after {
+      content: "";
+      position: absolute;
+      height: 4px;
+      top: auto;
+      right: 50%;
+      bottom: -5px;
+      left: 50%;
+      color: $blue;
+      opacity: 1;
+    }
+  }
+}
+
+
+.logOutBtn {
+  padding: 6px 0;
+}
