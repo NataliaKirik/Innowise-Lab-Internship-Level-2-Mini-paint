@@ -3,7 +3,7 @@ import { AppRootStateType, useAppDispatch } from '../../app/store';
 import { getImages, getUsers, ImgType, setSelectedUser } from '../../features/gallerySlice';
 import { Autocomplete, TextField } from '@mui/material';
 import { useSelector } from 'react-redux';
-import s from './gallery.module.css';
+import s from './gallery.module.scss';
 
 export const Gallery = () => {
     const dispatch = useAppDispatch();
@@ -29,7 +29,7 @@ export const Gallery = () => {
     }, [selectedUser]);
 
     return (
-        <div>
+        <>
             <Autocomplete
                 disablePortal
                 id="combo-box-demo"
@@ -45,9 +45,9 @@ export const Gallery = () => {
             />
             <div className={s.imgWrapper}>
                 {images.map((img) => (
-                    <img src={img.image} alt={img.id} className={s.img} key={img.id} />
+                    <img src={img.image} alt={img.id} key={img.id} />
                 ))}
             </div>
-        </div>
+        </>
     );
 };

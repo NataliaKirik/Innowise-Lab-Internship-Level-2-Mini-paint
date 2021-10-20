@@ -8,9 +8,11 @@
     display: flex;
     justify-content: center;
     align-items: center;
+
+    div {
+        z-index: 1000;
+        position: absolute;
+    }
 }
 
-.loader {
-    z-index: 1000;
-    position: absolute;
-}
+

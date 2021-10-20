@@ -1,5 +1,5 @@
 import React from 'react';
-import s from './preloader.module.css';
+import s from './preloader.module.scss';
 import LoaderGif from '../../../assets/img/loader.gif';
 import { useSelector } from 'react-redux';
 import { AppRootStateType } from '../../../app/store';
@@ -13,8 +13,8 @@ const Preloader = () => {
     }
     return (
         <div className={s.loaderContainer}>
-            <div className={s.loader}>
-                <img src={LoaderGif} alt="preloader" className={s.img} />
+            <div>
+                <img src={LoaderGif} alt="preloader" />
             </div>
         </div>
     );
