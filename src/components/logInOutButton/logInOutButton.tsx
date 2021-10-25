@@ -1,8 +1,8 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { AppRootStateType, useAppDispatch } from '../../../app/store';
+import { AppRootStateType, useAppDispatch } from '../../redux/store';
 import { Button } from '@mui/material';
-import { logOutUser } from '../../../features/loginSlice';
+import { logOutUser } from '../../redux/features/loginSlice';
 
 const LogInOutButton = () => {
     const isLoggedIn = useSelector<AppRootStateType, boolean>((state) => state.login.isAuth);

@@ -2,17 +2,13 @@ import React from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { Button, TextField } from '@mui/material';
 import { ErrorMessage } from '@hookform/error-message';
-import { Inputs } from '../../common/components/form/types';
-import s from '../../common/components/form/form.module.scss';
-import { useSelector } from 'react-redux';
-import { createUser } from '../../features/loginSlice';
-import { AppRootStateType, useAppDispatch } from '../../app/store';
-import { Redirect } from 'react-router-dom';
-import { PATH } from '../../common/constants/routes';
+import { Inputs } from '../../components/form/types';
+import s from '../../components/form/form.module.scss';
+import { createUser } from '../../redux/features/loginSlice';
+import { useAppDispatch } from '../../redux/store';
 
 export function Register() {
     const dispatch = useAppDispatch();
-    const isLoggedIn = useSelector<AppRootStateType, boolean>((state) => state.login.isAuth);
 
     const {
         watch,
@@ -35,8 +31,6 @@ export function Register() {
             }),
         );
     };
-
-    if (isLoggedIn) return <Redirect to={PATH.PAINT} />;
 
     return (
         <div className={s.formContainer}>

@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { collection, getDocs, query, where } from 'firebase/firestore';
-import { db } from '../firebase/db';
+import { db } from '../../firebase/db';
 import { startLoading, stopLoading } from './appSlice';
 
 export const getUsers = createAsyncThunk('gallerySlice/getUsers', async (_, thunkAPI) => {

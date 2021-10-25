@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
-import { AppRootStateType, useAppDispatch } from '../../app/store';
-import { getImages, getUsers, ImgType, setSelectedUser } from '../../features/gallerySlice';
+import { AppRootStateType, useAppDispatch } from '../../redux/store';
+import { getImages, getUsers, ImgType, setSelectedUser } from '../../redux/features/gallerySlice';
 import { Autocomplete, TextField } from '@mui/material';
 import { useSelector } from 'react-redux';
 import s from './gallery.module.scss';

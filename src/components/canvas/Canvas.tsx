@@ -1,13 +1,13 @@
 import React, { useEffect, useRef, useState } from 'react';
 import s from './canvas.module.scss';
 import { useSelector } from 'react-redux';
-import { AppRootStateType, useAppDispatch } from '../../../app/store';
+import { AppRootStateType, useAppDispatch } from '../../redux/store';
 import IconButton from '@mui/material/IconButton';
 import UndoIcon from '@mui/icons-material/Undo';
 import RedoIcon from '@mui/icons-material/Redo';
 import SaveIcon from '@mui/icons-material/Save';
-import { startLoading, stopLoading } from '../../../features/appSlice';
-import { saveArt } from '../../../firebase/db';
+import { saveArt } from '../../firebase/db';
+import { startLoading, stopLoading } from '../../redux/features/appSlice';
 
 const Canvas = () => {
     const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -41,6 +41,7 @@ const Canvas = () => {
             setStartY(e.pageY - target.offsetTop);
             setIsPainting(true);
             setCanvasData(ctx.getImageData(0, 0, canvasRef.current!.width, canvasRef.current!.height));
+            console.log(canvasData);
             if (tool === 'clear') {
                 ctx.clearRect(0, 0, canvasRef.current!.width, canvasRef.current!.height);
             }

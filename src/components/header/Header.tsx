@@ -1,10 +1,10 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { PATH } from '../../constants/routes';
+import { PATH } from '../routes/path';
 import s from './header.module.scss';
 import LogInOutButton from '../logInOutButton/logInOutButton';
 import { useSelector } from 'react-redux';
-import { AppRootStateType } from '../../../app/store';
+import { AppRootStateType } from '../../redux/store';
 
 function Header() {
     const isAuth = useSelector<AppRootStateType, boolean>((state) => state.login.isAuth);

@@ -2,17 +2,15 @@ import React from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { Button, TextField } from '@mui/material';
 import { ErrorMessage } from '@hookform/error-message';
-import { Inputs } from '../../common/components/form/types';
-import s from '../../common/components/form/form.module.scss';
-import { NavLink, Redirect } from 'react-router-dom';
-import { PATH } from '../../common/constants/routes';
-import { useSelector } from 'react-redux';
-import { authUser } from '../../features/loginSlice';
-import { AppRootStateType, useAppDispatch } from '../../app/store';
+import { Inputs } from '../../components/form/types';
+import s from '../../components/form/form.module.scss';
+import { NavLink } from 'react-router-dom';
+import { PATH } from '../../components/routes/path';
+import { authUser } from '../../redux/features/loginSlice';
+import { useAppDispatch } from '../../redux/store';
 
 export function Login() {
     const dispatch = useAppDispatch();
-    const isLoggedIn = useSelector<AppRootStateType, boolean>((state) => state.login.isAuth);
 
     const onSubmit: SubmitHandler<Inputs> = (data) => {
         dispatch(
@@ -34,8 +32,6 @@ export function Login() {
         },
         mode: 'onChange',
     });
-
-    if (isLoggedIn) return <Redirect to={PATH.PAINT} />;
 
     return (
         <div className={s.formContainer}>

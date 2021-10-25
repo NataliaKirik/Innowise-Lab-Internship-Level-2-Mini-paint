@@ -4,7 +4,7 @@ import Snackbar from '@mui/material/Snackbar';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import { useSelector } from 'react-redux';
-import { AppRootStateType } from '../../../app/store';
+import { AppRootStateType } from '../../redux/store';
 
 export function SimpleSnackbar() {
     const [open, setOpen] = React.useState(false);

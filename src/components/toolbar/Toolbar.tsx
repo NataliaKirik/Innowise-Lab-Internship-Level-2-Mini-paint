@@ -1,7 +1,7 @@
 import React from 'react';
 import s from './toolbar.module.scss';
-import { AppRootStateType, useAppDispatch } from '../../../app/store';
-import { chooseFillColor, chooseLineWidth, chooseOutlineColor, chooseTool } from '../../../features/toolSlice';
+import { AppRootStateType, useAppDispatch } from '../../redux/store';
+import { chooseFillColor, chooseLineWidth, chooseOutlineColor, chooseTool } from '../../redux/features/toolSlice';
 import { useSelector } from 'react-redux';
 
 const Toolbar = () => {

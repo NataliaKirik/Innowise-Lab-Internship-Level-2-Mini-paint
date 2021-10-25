@@ -1,9 +1,9 @@
 import React from 'react';
 import s from './preloader.module.scss';
-import LoaderGif from '../../../assets/img/loader.gif';
+import LoaderGif from '../../assets/img/loader.gif';
 import { useSelector } from 'react-redux';
-import { AppRootStateType } from '../../../app/store';
-import { statusType } from '../../../features/appSlice';
+import { AppRootStateType } from '../../redux/store';
+import { statusType } from '../../redux/features/appSlice';
 
 const Preloader = () => {
     const status = useSelector<AppRootStateType, statusType>((state) => state.app.status);

@@ -1,5 +1,5 @@
-@import '../../constants/style/colors.scss';
-@import '../../constants/style/fonts.scss';
+@import '../../style/constants/colors';
+@import '../../style/constants/fonts';
 
 
 @mixin button-background($property) {
@@ -34,27 +34,27 @@
     }
 
     .brush {
-        @include button-background("../../../assets/img/brush.png");
+        @include button-background("../../assets/img/brush.png");
     }
 
     .rect {
-        @include button-background("../../../assets/img/rect.png");
+        @include button-background("../../assets/img/rect.png");
     }
 
     .circle {
-        @include button-background("../../../assets/img/circle.png");
+        @include button-background("../../assets/img/circle.png");
     }
 
     .eraser {
-        @include button-background("../../../assets/img/eraser.png");
+        @include button-background("../../assets/img/eraser.png");
     }
 
     .line {
-        @include button-background("../../../assets/img/line.png");
+        @include button-background("../../assets/img/line.png");
     }
 
     .clear {
-        @include button-background("../../../assets/img/clear.png");
+        @include button-background("../../assets/img/clear.png");
     }
 
     .text {
