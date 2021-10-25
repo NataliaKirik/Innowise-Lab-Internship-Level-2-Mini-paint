@@ -8,18 +8,15 @@ import RedoIcon from '@mui/icons-material/Redo';
 import SaveIcon from '@mui/icons-material/Save';
 import { saveArt } from '../../firebase/db';
 import { startLoading, stopLoading } from '../../redux/features/appSlice';
+import { calculateWidthAndHeight, clearCanvasAndDrawImageData, drawByCoordinates } from './draw';
 
-const Canvas = () => {
+const Canvas = (props: any) => {
     const canvasRef = useRef<HTMLCanvasElement | null>(null);
-    const [ctx, setCtx] = useState<CanvasRenderingContext2D | null>(null);
+    const [context, setContext] = useState<CanvasRenderingContext2D | null>(null);
     const [startX, setStartX] = useState<number>(0);
     const [startY, setStartY] = useState<number>();
     const userEmail = useSelector<AppRootStateType, string | null>((state) => state.login.userEmail);
     const userId = useSelector<AppRootStateType, string | null>((state) => state.login.uid);
-    const tool = useSelector<AppRootStateType, string>((state) => state.toolBar.activeTool);
-    const outlineColor = useSelector<AppRootStateType, string>((state) => state.toolBar.outlineColor);
-    const fillColor = useSelector<AppRootStateType, string>((state) => state.toolBar.fillColor);
-    const width = useSelector<AppRootStateType, number>((state) => state.toolBar.lineWidth);
     const [isPainting, setIsPainting] = useState<boolean>(false);
     const [canvasData, setCanvasData] = useState<ImageData | undefined>();
     const dispatch = useAppDispatch();
@@ -28,22 +25,20 @@ const Canvas = () => {
 
     useEffect(() => {
         if (canvasRef.current) {
-            setCtx(canvasRef.current.getContext('2d'));
+            setContext(canvasRef.current.getContext('2d'));
         }
     }, []);
 
-    const onMouseDownHandler = (e: React.MouseEvent) => {
-        const target = e.target as HTMLCanvasElement;
-        if (ctx) {
-            ctx.beginPath();
-            ctx.moveTo(e.pageX - target.offsetLeft, e.pageY - target.offsetTop);
-            setStartX(e.pageX - target.offsetLeft);
-            setStartY(e.pageY - target.offsetTop);
+    const onMouseDownHandler = (event: React.MouseEvent) => {
+        const target = event.target as HTMLCanvasElement;
+        if (context) {
+            context.beginPath();
+            setStartX(event.pageX - target.offsetLeft);
+            setStartY(event.pageY - target.offsetTop);
             setIsPainting(true);
-            setCanvasData(ctx.getImageData(0, 0, canvasRef.current!.width, canvasRef.current!.height));
-            console.log(canvasData);
-            if (tool === 'clear') {
-                ctx.clearRect(0, 0, canvasRef.current!.width, canvasRef.current!.height);
+            setCanvasData(context.getImageData(0, 0, canvasRef.current!.width, canvasRef.current!.height));
+            if (props.activeTool === 'clear') {
+                context.clearRect(0, 0, canvasRef.current!.width, canvasRef.current!.height);
             }
         }
         if (canvasRef.current) {
@@ -51,65 +46,42 @@ const Canvas = () => {
         }
     };
 
-    const onMouseMoveHandler = (e: React.MouseEvent) => {
-        const target = e.target as HTMLCanvasElement;
-        if (isPainting && ctx && startX && startY && canvasRef.current) {
-            ctx.strokeStyle = outlineColor;
-            ctx.fillStyle = fillColor;
-            ctx.lineWidth = width;
-            switch (tool) {
-                case 'brush':
-                    ctx.lineTo(e.pageX - target.offsetLeft, e.pageY - target.offsetTop);
-                    ctx.stroke();
-                    break;
+    const onMouseMoveHandler = (event: React.MouseEvent) => {
+        const target = event.target as HTMLCanvasElement;
+        if (isPainting && context && startX && startY && canvasRef.current) {
+            context.strokeStyle = props.outlineColor;
+            context.fillStyle = props.fillColor;
+            context.lineWidth = props.width;
+            switch (props.activeTool) {
                 case 'rect':
-                    let currentX = e.pageX - target.offsetLeft;
-                    let currentY = e.pageY - target.offsetTop;
-                    let width = currentX - startX;
-                    let height = currentY - startY;
-                    ctx.clearRect(0, 0, canvasRef.current!.width, canvasRef.current!.height);
-                    if (canvasData) {
-                        ctx.putImageData(canvasData, 0, 0);
-                    }
-                    ctx.beginPath();
-                    ctx.fillRect(startX, startY, width, height);
-                    ctx.strokeRect(startX, startY, width, height);
-
+                    const dimensions = calculateWidthAndHeight(event, target, startX, startY);
+                    clearCanvasAndDrawImageData(context, canvasRef, canvasData);
+                    context.fillRect(startX, startY, dimensions.width, dimensions.height);
+                    context.strokeRect(startX, startY, dimensions.width, dimensions.height);
                     break;
                 case 'circle': {
-                    let currentX = e.pageX - target.offsetLeft;
-                    let currentY = e.pageY - target.offsetTop;
-                    let width = currentX - startX;
-                    let height = currentY - startY;
-                    let r = Math.sqrt(width ** 2 + height ** 2);
-                    ctx.clearRect(0, 0, canvasRef.current!.width, canvasRef.current!.height);
-                    if (canvasData) {
-                        ctx.putImageData(canvasData, 0, 0);
-                    }
-                    ctx.beginPath();
-                    ctx.arc(startX, startY, r, 0, 2 * Math.PI, false);
-                    ctx.fill();
-                    ctx.stroke();
+                    const dimensions = calculateWidthAndHeight(event, target, startX, startY);
+                    clearCanvasAndDrawImageData(context, canvasRef, canvasData);
+                    let r = Math.sqrt(dimensions.width ** 2 + dimensions.height ** 2);
+                    context.arc(startX, startY, r, 0, 2 * Math.PI, false);
+                    context.fill();
+                    context.stroke();
                     break;
                 }
-                case 'eraser':
-                    ctx.strokeStyle = 'white';
-                    ctx.lineTo(e.pageX - target.offsetLeft, e.pageY - target.offsetTop);
-                    ctx.stroke();
-                    break;
                 case 'line': {
-                    let currentX = e.pageX - target.offsetLeft;
-                    let currentY = e.pageY - target.offsetTop;
-                    ctx.clearRect(0, 0, canvasRef.current!.width, canvasRef.current!.height);
-                    if (canvasData) {
-                        ctx.putImageData(canvasData, 0, 0);
-                    }
-                    ctx.beginPath();
-                    ctx.moveTo(startX, startY);
-                    ctx.lineTo(currentX, currentY);
-                    ctx.stroke();
+                    clearCanvasAndDrawImageData(context, canvasRef, canvasData);
+                    context.moveTo(startX, startY);
+                    drawByCoordinates(context, event, target);
                     break;
                 }
+                case 'brush':
+                    drawByCoordinates(context, event, target);
+                    break;
+                case 'eraser':
+                    context.strokeStyle = 'white';
+                    drawByCoordinates(context, event, target);
+                    break;
+
                 default:
                     break;
             }
@@ -129,11 +101,11 @@ const Canvas = () => {
                 img.src = dataUrl;
             }
             img.onload = () => {
-                ctx!.clearRect(0, 0, canvasRef.current!.width, canvasRef.current!.height);
-                ctx!.drawImage(img, 0, 0, canvasRef.current!.width, canvasRef.current!.height);
+                context!.clearRect(0, 0, canvasRef.current!.width, canvasRef.current!.height);
+                context!.drawImage(img, 0, 0, canvasRef.current!.width, canvasRef.current!.height);
             };
         } else {
-            ctx!.clearRect(0, 0, canvasRef.current!.width, canvasRef.current!.height);
+            context!.clearRect(0, 0, canvasRef.current!.width, canvasRef.current!.height);
         }
     };
     const redo = () => {
@@ -145,8 +117,8 @@ const Canvas = () => {
                 img.src = dataUrl;
             }
             img.onload = () => {
-                ctx!.clearRect(0, 0, canvasRef.current!.width, canvasRef.current!.height);
-                ctx!.drawImage(img, 0, 0, canvasRef.current!.width, canvasRef.current!.height);
+                context!.clearRect(0, 0, canvasRef.current!.width, canvasRef.current!.height);
+                context!.drawImage(img, 0, 0, canvasRef.current!.width, canvasRef.current!.height);
             };
         }
     };

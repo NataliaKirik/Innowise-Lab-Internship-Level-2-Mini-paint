@@ -1,14 +1,14 @@
 import React from 'react';
 import { SubmitHandler } from 'react-hook-form';
-import { Inputs } from '../../components/form/types';
 import { authUser } from '../../redux/features/loginSlice';
 import { useAppDispatch } from '../../redux/store';
 import Form from '../../components/form/Form';
+import { formInput } from '../../components/form/types';
 
 export function Login() {
     const dispatch = useAppDispatch();
 
-    const onSubmit: SubmitHandler<Inputs> = (data) => {
+    const onSubmit: SubmitHandler<formInput> = (data) => {
         dispatch(
             authUser({
                 email: data.email,

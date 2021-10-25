@@ -70,9 +70,9 @@ export const { setSelectedUser } = slice.actions;
 type InitialStateType = {
     usersEmail: [];
     selectedUser: string;
-    images: ImgType[];
+    images: ImageType[];
 };
-export type ImgType = {
+export type ImageType = {
     id: string;
     image: string;
 };

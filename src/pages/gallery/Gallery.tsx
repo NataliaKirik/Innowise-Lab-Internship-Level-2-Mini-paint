@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { AppRootStateType, useAppDispatch } from '../../redux/store';
-import { getImages, getUsers, ImgType, setSelectedUser } from '../../redux/features/gallerySlice';
+import { getImages, getUsers, ImageType, setSelectedUser } from '../../redux/features/gallerySlice';
 import { Autocomplete, TextField } from '@mui/material';
 import { useSelector } from 'react-redux';
 import s from './gallery.module.scss';
@@ -8,8 +8,8 @@ import s from './gallery.module.scss';
 export const Gallery = () => {
     const dispatch = useAppDispatch();
     const usersEmails = useSelector<AppRootStateType, string[]>((state) => state.gallery.usersEmail);
-    const uniqueUsersEmails = usersEmails.filter(function (item, pos) {
-        return usersEmails.indexOf(item) == pos;
+    const uniqueUsersEmails = usersEmails.filter(function (item, index) {
+        return usersEmails.indexOf(item) == index;
     });
     const usersEmailsLabel = uniqueUsersEmails.map((e) => {
         return {
@@ -17,7 +17,7 @@ export const Gallery = () => {
             id: e,
         };
     });
-    const images = useSelector<AppRootStateType, ImgType[]>((state) => state.gallery.images);
+    const images = useSelector<AppRootStateType, ImageType[]>((state) => state.gallery.images);
     const selectedUser = useSelector<AppRootStateType, string>((state) => state.gallery.selectedUser);
 
     useEffect(() => {
@@ -32,7 +32,6 @@ export const Gallery = () => {
         <>
             <Autocomplete
                 disablePortal
-                id="combo-box-demo"
                 options={usersEmailsLabel}
                 renderInput={(params) => <TextField {...params} label="Select user" />}
                 onInputChange={(e, value) => dispatch(setSelectedUser(value))}
@@ -40,12 +39,11 @@ export const Gallery = () => {
                     label: selectedUser,
                     id: selectedUser,
                 }}
-                // isOptionEqualToValue={(option, value) => option.label === value.label}
                 className={s.inputSelect}
             />
-            <div className={s.imgWrapper}>
-                {images.map((img) => (
-                    <img src={img.image} alt={img.id} key={img.id} />
+            <div className={s.imageWrapper}>
+                {images.map(({ image, id }) => (
+                    <img src={image} alt={id} key={id} />
                 ))}
             </div>
         </>

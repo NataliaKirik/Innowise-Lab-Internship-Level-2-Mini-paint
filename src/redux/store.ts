@@ -2,7 +2,6 @@ import { combineReducers } from 'redux';
 import thunkMiddleware from 'redux-thunk';
 import { configureStore } from '@reduxjs/toolkit';
 import { loginSlice } from './features/loginSlice';
-import { toolSlice } from './features/toolSlice';
 import { useDispatch } from 'react-redux';
 import { gallerySlice } from './features/gallerySlice';
 import { appSlice } from './features/appSlice';
@@ -10,7 +9,6 @@ import { appSlice } from './features/appSlice';
 const rootReducer = combineReducers({
     app: appSlice,
     login: loginSlice,
-    toolBar: toolSlice,
     gallery: gallerySlice,
 });
 
