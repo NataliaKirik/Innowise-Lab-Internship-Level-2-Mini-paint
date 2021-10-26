@@ -1,27 +1,13 @@
-import { combineReducers } from 'redux';
-import thunkMiddleware from 'redux-thunk';
-import { configureStore } from '@reduxjs/toolkit';
-import { loginSlice } from './features/loginSlice';
-import { useDispatch } from 'react-redux';
-import { gallerySlice } from './features/gallerySlice';
-import { appSlice } from './features/appSlice';
+import { applyMiddleware, createStore } from 'redux';
+import createSagaMiddleware from 'redux-saga';
+import { rootReducer } from './reducers/rootReducer';
+import rootSaga from './sagas/rootSaga';
+import { composeWithDevTools } from 'redux-devtools-extension';
 
-const rootReducer = combineReducers({
-    app: appSlice,
-    login: loginSlice,
-    gallery: gallerySlice,
-});
+const sagaMiddleware = createSagaMiddleware();
 
-const store = configureStore({
-    reducer: rootReducer,
-    middleware: (getDefaultMiddleware) => getDefaultMiddleware().prepend(thunkMiddleware),
-});
+const store = createStore(rootReducer, composeWithDevTools(applyMiddleware(sagaMiddleware)));
 
-export type AppRootStateType = ReturnType<typeof rootReducer>;
-export type AppDispatch = typeof store.dispatch;
-export const useAppDispatch = () => useDispatch<AppDispatch>();
-
-// @ts-ignore
-window.store = store;
+sagaMiddleware.run(rootSaga);
 
 export default store;

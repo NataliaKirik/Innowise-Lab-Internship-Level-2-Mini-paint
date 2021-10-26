@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import s from './canvas.module.scss';
-import { useSelector } from 'react-redux';
-import { AppRootStateType, useAppDispatch } from '../../redux/store';
+import { useDispatch, useSelector } from 'react-redux';
 import IconButton from '@mui/material/IconButton';
 import UndoIcon from '@mui/icons-material/Undo';
 import RedoIcon from '@mui/icons-material/Redo';
@@ -9,17 +8,20 @@ import SaveIcon from '@mui/icons-material/Save';
 import { saveArt } from '../../firebase/db';
 import { startLoading, stopLoading } from '../../redux/features/appSlice';
 import { calculateWidthAndHeight, clearCanvasAndDrawImageData, drawByCoordinates } from './draw';
+import { RootStateType } from '../../redux/reducers/rootReducer';
 
 const Canvas = (props: any) => {
     const canvasRef = useRef<HTMLCanvasElement | null>(null);
     const [context, setContext] = useState<CanvasRenderingContext2D | null>(null);
     const [startX, setStartX] = useState<number>(0);
     const [startY, setStartY] = useState<number>();
-    const userEmail = useSelector<AppRootStateType, string | null>((state) => state.login.userEmail);
-    const userId = useSelector<AppRootStateType, string | null>((state) => state.login.uid);
+    // @ts-ignore
+    const userEmail = useSelector<RootStateType, string | null>((state) => state.auth.userEmail);
+    // @ts-ignore
+    const userId = useSelector<RootStateType, string | null>((state) => state.auth.uid);
     const [isPainting, setIsPainting] = useState<boolean>(false);
     const [canvasData, setCanvasData] = useState<ImageData | undefined>();
-    const dispatch = useAppDispatch();
+    const dispatch = useDispatch();
     const [undoList, setUndoList] = useState<string[]>([]);
     const redoList: string[] = [];
 

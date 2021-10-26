@@ -1,13 +1,13 @@
 import React, { useEffect } from 'react';
-import { AppRootStateType, useAppDispatch } from '../../redux/store';
 import { getImages, getUsers, ImageType, setSelectedUser } from '../../redux/features/gallerySlice';
 import { Autocomplete, TextField } from '@mui/material';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import s from './gallery.module.scss';
+import { RootStateType } from '../../redux/reducers/rootReducer';
 
 export const Gallery = () => {
-    const dispatch = useAppDispatch();
-    const usersEmails = useSelector<AppRootStateType, string[]>((state) => state.gallery.usersEmail);
+    const dispatch = useDispatch();
+    const usersEmails = useSelector<RootStateType, string[]>((state) => state.gallery.usersEmail);
     const uniqueUsersEmails = usersEmails.filter(function (item, index) {
         return usersEmails.indexOf(item) == index;
     });
@@ -17,8 +17,8 @@ export const Gallery = () => {
             id: e,
         };
     });
-    const images = useSelector<AppRootStateType, ImageType[]>((state) => state.gallery.images);
-    const selectedUser = useSelector<AppRootStateType, string>((state) => state.gallery.selectedUser);
+    const images = useSelector<RootStateType, ImageType[]>((state) => state.gallery.images);
+    const selectedUser = useSelector<RootStateType, string>((state) => state.gallery.selectedUser);
 
     useEffect(() => {
         dispatch(getUsers());
