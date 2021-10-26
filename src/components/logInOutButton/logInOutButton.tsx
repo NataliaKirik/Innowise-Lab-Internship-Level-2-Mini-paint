@@ -1,16 +1,14 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-
 import { Button } from '@mui/material';
 import { RootStateType } from '../../redux/reducers/rootReducer';
 import { authActionTypes } from '../../redux/types/actionTypes';
 
 const LogInOutButton = () => {
-    // @ts-ignore
     const isAuth = useSelector<RootStateType, boolean>((state) => state.auth.isAuth);
     const dispatch = useDispatch();
     const onLogOutClick = () => {
-        dispatch(authActionTypes.LOG_OUT);
+        dispatch({ type: authActionTypes.LOG_OUT });
     };
 
     return (

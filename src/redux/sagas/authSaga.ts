@@ -2,9 +2,10 @@ import { call, put, takeEvery } from 'redux-saga/effects';
 import { authActionTypes } from '../types/actionTypes';
 import { User } from '@firebase/auth-types';
 import { loginUser, logOutUser, registerUser } from '../../services/authService';
+import { sagaPayloadType } from '../types/types';
 
-function* registerSaga(action: any) {
-    const { email, password } = action.payload;
+function* registerSaga({ payload }: sagaPayloadType) {
+    const { email, password } = payload;
     try {
         const userData: User = yield call(registerUser, email, password);
         const userEmail = userData.email;
@@ -26,8 +27,8 @@ function* registerSaga(action: any) {
     }
 }
 
-function* loginSaga(action: any) {
-    const { email, password } = action.payload;
+function* loginSaga({ payload }: sagaPayloadType) {
+    const { email, password } = payload;
     try {
         const userData: User = yield call(loginUser, email, password);
         const userEmail = userData.email;

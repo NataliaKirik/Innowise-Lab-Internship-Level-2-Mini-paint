@@ -1,5 +1,4 @@
-import { appActionTypes, galleryActionTypes, authActionTypes } from './actionTypes';
-import { rootReducer } from '../reducers/rootReducer';
+import { appActionTypes, authActionTypes, galleryActionTypes } from './actionTypes';
 
 //app
 type setStatusActionType = { type: typeof appActionTypes.SET_STATUS; error: string };
@@ -9,11 +8,18 @@ export type appInitialState = {
     error: null | string;
     status: 'idle' | 'loading';
 };
+export type sagaPayloadType = {
+    type: appActionsType;
+    payload: {
+        email: string;
+        password: string;
+    };
+};
 
 //auth
 type setEmailActionType = { type: typeof authActionTypes.SET_EMAIL; userEmail: string };
 type setUidActionType = { type: typeof authActionTypes.SET_UID; userUid: string };
-type setIsAuthType = { type: typeof authActionTypes.SET_IS_AUTH; isAuth: string };
+type setIsAuthType = { type: typeof authActionTypes.SET_IS_AUTH; isAuth: boolean };
 export type authActionsType = setEmailActionType | setUidActionType | setIsAuthType;
 export type authAction = {
     payload: { email: string; password: string };

@@ -1,13 +1,11 @@
 import React, { useEffect, useRef, useState } from 'react';
 import style from './canvas.module.scss';
-import { useSelector } from 'react-redux';
-import { AppRootStateType, useAppDispatch } from '../../redux/store';
+// import { AppRootStateType, useAppDispatch } from '../../redux/store';
 import IconButton from '@mui/material/IconButton';
 import UndoIcon from '@mui/icons-material/Undo';
 import RedoIcon from '@mui/icons-material/Redo';
 import SaveIcon from '@mui/icons-material/Save';
 import { calculateWidthAndHeight, clearCanvasAndDrawImageData, drawByCoordinates } from './draw';
-import { saveArt } from '../../redux/features/gallerySlice';
 import { canvasPropsType } from './types';
 
 const Canvas = (props: canvasPropsType) => {
@@ -15,11 +13,11 @@ const Canvas = (props: canvasPropsType) => {
     const [context, setContext] = useState<CanvasRenderingContext2D | null>(null);
     const [startX, setStartX] = useState<number>(0);
     const [startY, setStartY] = useState<number>();
-    const userEmail = useSelector<AppRootStateType, string | null>((state) => state.login.userEmail);
-    const userId = useSelector<AppRootStateType, string | null>((state) => state.login.uid);
+    // const userEmail = useSelector<AppRootStateType, string | null>((state) => state.login.userEmail);
+    // const userId = useSelector<AppRootStateType, string | null>((state) => state.login.uid);
     const [isPainting, setIsPainting] = useState<boolean>(false);
     const [canvasData, setCanvasData] = useState<ImageData | undefined>();
-    const dispatch = useAppDispatch();
+    // const dispatch = useAppDispatch();
     const [undoList, setUndoList] = useState<string[]>([]);
     const redoList: string[] = [];
 
@@ -123,13 +121,13 @@ const Canvas = (props: canvasPropsType) => {
         }
     };
     const save = () => {
-        dispatch(
-            saveArt({
-                userEmail,
-                userId,
-                canvasDataUrl: canvasRef.current!.toDataURL(),
-            }),
-        );
+        // dispatch(
+        //     saveArt({
+        //         userEmail,
+        //         userId,
+        //         canvasDataUrl: canvasRef.current!.toDataURL(),
+        //     }),
+        // );
     };
 
     return (
