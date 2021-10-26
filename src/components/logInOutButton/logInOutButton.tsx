@@ -1,19 +1,21 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
-import { AppRootStateType, useAppDispatch } from '../../redux/store';
+import { useDispatch, useSelector } from 'react-redux';
+
 import { Button } from '@mui/material';
-import { logOutUser } from '../../redux/features/loginSlice';
+import { RootStateType } from '../../redux/reducers/rootReducer';
+import { authActionTypes } from '../../redux/types/actionTypes';
 
 const LogInOutButton = () => {
-    const isLoggedIn = useSelector<AppRootStateType, boolean>((state) => state.login.isAuth);
-    const dispatch = useAppDispatch();
+    // @ts-ignore
+    const isAuth = useSelector<RootStateType, boolean>((state) => state.auth.isAuth);
+    const dispatch = useDispatch();
     const onLogOutClick = () => {
-        dispatch(logOutUser());
+        dispatch(authActionTypes.LOG_OUT);
     };
 
     return (
         <>
-            {isLoggedIn ? (
+            {isAuth ? (
                 <Button variant={'contained'} type={'submit'} onClick={onLogOutClick}>
                     Log out
                 </Button>

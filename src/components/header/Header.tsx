@@ -4,10 +4,11 @@ import { PATH } from '../routes/path';
 import style from './header.module.scss';
 import LogInOutButton from '../logInOutButton/logInOutButton';
 import { useSelector } from 'react-redux';
-import { AppRootStateType } from '../../redux/store';
+import { RootStateType } from '../../redux/reducers/rootReducer';
 
 function Header() {
-    const isAuth = useSelector<AppRootStateType, boolean>((state) => state.login.isAuth);
+    // @ts-ignore
+    const isAuth = useSelector<RootStateType, boolean>((state) => state.auth.isAuth);
     return (
         <div className={style.header}>
             <div className={style.menu}>

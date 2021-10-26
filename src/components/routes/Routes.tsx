@@ -1,15 +1,15 @@
 import React, { FunctionComponent } from 'react';
-import { useSelector } from 'react-redux';
 import { Redirect, Route, Switch } from 'react-router-dom';
-import { AppRootStateType } from '../../redux/store';
 import { PATH } from './path';
 import { Login } from '../../pages/login/Login';
 import { Register } from '../../pages/register/Register';
-import { Gallery } from '../../pages/gallery/Gallery';
 import { Paint } from '../../pages/paint/Paint';
+import { useSelector } from 'react-redux';
+import { RootStateType } from '../../redux/reducers/rootReducer';
 
 export const Routes = () => {
-    const isAuth = useSelector<AppRootStateType, boolean>((state) => state.login.isAuth);
+    // @ts-ignore
+    const isAuth = useSelector<RootStateType, boolean>((state) => state.auth.isAuth);
 
     return (
         <>
@@ -41,20 +41,20 @@ const publicRoutes: RouteType[] = [
         path: PATH.REGISTER,
         component: Register,
     },
-    {
-        path: PATH.GALLERY,
-        component: Gallery,
-    },
+    // {
+    //     path: PATH.GALLERY,
+    //     component: Gallery,
+    // },
 ];
 const privateRoutes: RouteType[] = [
     {
         path: PATH.PAINT,
         component: Paint,
     },
-    {
-        path: PATH.GALLERY,
-        component: Gallery,
-    },
+    // {
+    //     path: PATH.GALLERY,
+    //     component: Gallery,
+    // },
 ];
 
 type RouteType = {

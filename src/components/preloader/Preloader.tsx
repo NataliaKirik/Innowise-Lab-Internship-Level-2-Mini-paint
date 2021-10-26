@@ -2,11 +2,12 @@ import React from 'react';
 import style from './preloader.module.scss';
 import LoaderGif from '../../assets/img/loader.gif';
 import { useSelector } from 'react-redux';
-import { AppRootStateType } from '../../redux/store';
 import { statusType } from '../../redux/features/appSlice';
+import { RootStateType } from '../../redux/reducers/rootReducer';
 
 const Preloader = () => {
-    const status = useSelector<AppRootStateType, statusType>((state) => state.app.status);
+    // @ts-ignore
+    const status = useSelector<RootStateType, statusType>((state) => state.app.status);
 
     if (status === 'idle') {
         return null;

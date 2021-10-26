@@ -4,12 +4,13 @@ import Snackbar from '@mui/material/Snackbar';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import { useSelector } from 'react-redux';
-import { AppRootStateType } from '../../redux/store';
+import { RootStateType } from '../../redux/reducers/rootReducer';
 
 export function SimpleSnackbar() {
     const [open, setOpen] = React.useState(false);
     const [message, setMessage] = React.useState('');
-    const errorMessage = useSelector<AppRootStateType, string | null>((state) => state.app.error);
+    // @ts-ignore
+    const errorMessage = useSelector<RootStateType, string | null>((state) => state.app.error);
 
     useEffect(() => {
         if (errorMessage) {
