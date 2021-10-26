@@ -75,7 +75,7 @@ const onFulfilled = (
     state.uid = payload.userUid;
     state.isAuth = payload.isAuth;
 };
-const onRejected = (state: InitialStateType, { payload }: PayloadAction<{ isAuth: boolean; userEmail: string }>) => {
+const onRejected = (state: InitialStateType, { payload }: PayloadAction<actionDataType>) => {
     state.isAuth = payload.isAuth;
     state.userEmail = payload.userEmail;
 };
@@ -84,7 +84,7 @@ const slice = createSlice({
     name: 'loginSlice',
     initialState: initialState,
     reducers: {
-        setNotAuth(state: InitialStateType, { payload }: PayloadAction<{ isAuth: boolean; userEmail: string }>) {
+        setNotAuth(state: InitialStateType, { payload }: PayloadAction<actionDataType>) {
             state.userEmail = payload.userEmail;
             state.isAuth = payload.isAuth;
         },
@@ -116,4 +116,7 @@ type AuthType = {
     email: string;
     password: string;
 };
-type payloadType = { payload: { userEmail: string | null; userUid: string | null; isAuth: boolean } };
+type actionDataType = {
+    isAuth: boolean;
+    userEmail: string;
+};

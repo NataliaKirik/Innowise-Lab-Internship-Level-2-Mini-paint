@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { addDoc, collection, getDocs, query, where } from 'firebase/firestore';
 import { setError, startLoading, stopLoading } from './appSlice';
 import { dataBase } from '../../firebase/firebase';
@@ -7,63 +7,41 @@ export const getUsers = createAsyncThunk('gallerySlice/getUsers', async (_, thun
     try {
         thunkAPI.dispatch(startLoading('loading'));
         const querySnapshot = await getDocs(query(collection(dataBase, 'artCollection')));
-        const userEmails = querySnapshot.docs.map((doc) => {
+        thunkAPI.dispatch(stopLoading('idle'));
+        return querySnapshot.docs.map((doc) => {
             return doc.data().userEmail;
         });
-        thunkAPI.dispatch(stopLoading('idle'));
-        return userEmails;
     } catch (error) {
         const message = (error as Error).message;
         thunkAPI.dispatch(stopLoading('idle'));
         thunkAPI.dispatch(setError(message));
     }
-    //
-    // thunkAPI.dispatch(startLoading('loading'));
-    // return getDocs(query(collection(dataBase, 'artCollection')))
-    //     .then(({ docs }) => {
-    //         debugger;
-    //         return docs.map((user) => user.data());
-    //     })
-    //     .then((users) => {
-    //         thunkAPI.dispatch(stopLoading('idle'));
-    //         return users.map((u) => {
-    //             return u.userEmail;
-    //         });
-    //     });
 });
 
 export const getArt = createAsyncThunk('gallery/getArt', async (userEmail: string, thunkAPI) => {
-    thunkAPI.dispatch(startLoading('loading'));
-    let q = query(collection(dataBase, 'artCollection'));
-    if (userEmail) {
-        thunkAPI.dispatch(stopLoading('idle'));
-        q = query(collection(dataBase, 'artCollection'), where('userEmail', '==', userEmail));
-    }
-    return getDocs(q)
-        .then((data) => {
-            return data.docs;
-        })
-        .then((images) => {
+    try {
+        thunkAPI.dispatch(startLoading('loading'));
+        let q = await query(collection(dataBase, 'artCollection'));
+        if (userEmail) {
+            q = await query(collection(dataBase, 'artCollection'), where('userEmail', '==', userEmail));
             thunkAPI.dispatch(stopLoading('idle'));
-            return images.map((img) => {
-                return {
-                    id: img.id,
-                    image: img.data().canvasDataUrl,
-                };
-            });
+        }
+        const querySnapshot = await getDocs(q);
+        return querySnapshot.docs.map((doc) => {
+            return {
+                image: doc.data().canvasDataUrl,
+            };
         });
+    } catch (error) {
+        const message = (error as Error).message;
+        thunkAPI.dispatch(stopLoading('idle'));
+        thunkAPI.dispatch(setError(message));
+    }
 });
 
 export const saveArt = createAsyncThunk(
     'gallery/saveArt',
-    async (
-        {
-            userEmail,
-            userId,
-            canvasDataUrl,
-        }: { userEmail: string | null; userId: string | null; canvasDataUrl: string },
-        thunkAPI,
-    ) => {
+    async ({ userEmail, userId, canvasDataUrl }: saveArtParamsType, thunkAPI) => {
         const artRef = collection(dataBase, 'artCollection');
         thunkAPI.dispatch(startLoading('loading'));
         await addDoc(artRef, {
@@ -85,16 +63,17 @@ const slice = createSlice({
     name: 'gallerySlice',
     initialState: initialState,
     reducers: {
-        setSelectedUser(state: InitialStateType, action) {
-            state.selectedUser = action.payload;
+        setSelectedUser(state: InitialStateType, { payload }) {
+            state.selectedUser = payload;
         },
     },
     extraReducers: (builder) => {
-        builder.addCase(getUsers.fulfilled, (state: InitialStateType, action: any) => {
-            state.usersEmail = action.payload;
+        //??
+        builder.addCase(getUsers.fulfilled, (state: InitialStateType, { payload }: PayloadAction<any>) => {
+            state.usersEmail = payload;
         });
-        builder.addCase(getArt.fulfilled, (state: InitialStateType, action: any) => {
-            state.images = action.payload;
+        builder.addCase(getArt.fulfilled, (state: InitialStateType, { payload }: PayloadAction<any>) => {
+            state.images = payload;
         });
     },
 });
@@ -111,4 +90,9 @@ type InitialStateType = {
 export type ImageType = {
     id: string;
     image: string;
+};
+type saveArtParamsType = {
+    userEmail: string | null;
+    userId: string | null;
+    canvasDataUrl: string;
 };
