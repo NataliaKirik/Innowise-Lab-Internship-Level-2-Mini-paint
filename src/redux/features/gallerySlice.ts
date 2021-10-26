@@ -1,20 +1,35 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { addDoc, collection, getDocs, query, where } from 'firebase/firestore';
-import { startLoading, stopLoading } from './appSlice';
+import { setError, startLoading, stopLoading } from './appSlice';
 import { dataBase } from '../../firebase/firebase';
 
 export const getUsers = createAsyncThunk('gallerySlice/getUsers', async (_, thunkAPI) => {
-    thunkAPI.dispatch(startLoading('loading'));
-    return getDocs(query(collection(dataBase, 'artCollection')))
-        .then(({ docs }) => {
-            return docs.map((user) => user.data());
-        })
-        .then((users) => {
-            thunkAPI.dispatch(stopLoading('idle'));
-            return users.map((u) => {
-                return u.userEmail;
-            });
+    try {
+        thunkAPI.dispatch(startLoading('loading'));
+        const querySnapshot = await getDocs(query(collection(dataBase, 'artCollection')));
+        const userEmails = querySnapshot.docs.map((doc) => {
+            return doc.data().userEmail;
         });
+        thunkAPI.dispatch(stopLoading('idle'));
+        return userEmails;
+    } catch (error) {
+        const message = (error as Error).message;
+        thunkAPI.dispatch(stopLoading('idle'));
+        thunkAPI.dispatch(setError(message));
+    }
+    //
+    // thunkAPI.dispatch(startLoading('loading'));
+    // return getDocs(query(collection(dataBase, 'artCollection')))
+    //     .then(({ docs }) => {
+    //         debugger;
+    //         return docs.map((user) => user.data());
+    //     })
+    //     .then((users) => {
+    //         thunkAPI.dispatch(stopLoading('idle'));
+    //         return users.map((u) => {
+    //             return u.userEmail;
+    //         });
+    //     });
 });
 
 export const getArt = createAsyncThunk('gallery/getArt', async (userEmail: string, thunkAPI) => {

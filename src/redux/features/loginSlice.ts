@@ -15,9 +15,10 @@ export const createUser = createAsyncThunk('login/createUser', async ({ email, p
             userUid,
             isAuth: true,
         };
-    } catch (error: any) {
+    } catch (error) {
         thunkAPI.dispatch(stopLoading('idle'));
-        thunkAPI.dispatch(setError(error.message));
+        const message = (error as Error).message;
+        thunkAPI.dispatch(setError(message));
         return thunkAPI.rejectWithValue({
             userEmail: null,
             isAuth: false,
@@ -50,15 +51,14 @@ export const authUser = createAsyncThunk('login/authUser', async ({ email, passw
 
 export const logOutUser = createAsyncThunk('login/logOutUser ', async (_, thunkAPI) => {
     thunkAPI.dispatch(startLoading('loading'));
-    signOut(auth)
-        .then(() => {
-            thunkAPI.dispatch(stopLoading('idle'));
-        })
-        .catch((error) => {
-            const message = (error as Error).message;
-            thunkAPI.dispatch(stopLoading('idle'));
-            thunkAPI.dispatch(setError(message));
-        });
+    try {
+        await signOut(auth);
+        thunkAPI.dispatch(stopLoading('idle'));
+    } catch (error) {
+        const message = (error as Error).message;
+        thunkAPI.dispatch(stopLoading('idle'));
+        thunkAPI.dispatch(setError(message));
+    }
 });
 
 const initialState: InitialStateType = {
