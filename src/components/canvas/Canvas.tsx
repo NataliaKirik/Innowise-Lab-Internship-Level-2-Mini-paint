@@ -93,30 +93,35 @@ const Canvas = (props: canvasPropsType) => {
     };
 
     const undo = () => {
-        if (redoList.length > 0) {
+        if (undoList.length > 0) {
             let dataUrl = undoList.pop();
             redoList.push(canvasRef.current!.toDataURL());
-            drawImageByUrl(dataUrl);
+            let img = new Image();
+            if (typeof dataUrl === 'string') {
+                img.src = dataUrl;
+            }
+            img.onload = () => {
+                context!.clearRect(0, 0, canvasRef.current!.width, canvasRef.current!.height);
+                context!.drawImage(img, 0, 0, canvasRef.current!.width, canvasRef.current!.height);
+            };
+        } else {
+            context!.clearRect(0, 0, canvasRef.current!.width, canvasRef.current!.height);
         }
     };
     const redo = () => {
         if (redoList.length > 0) {
             let dataUrl = redoList.pop();
             undoList.push(canvasRef.current!.toDataURL());
-            drawImageByUrl(dataUrl);
+            let img = new Image();
+            if (typeof dataUrl === 'string') {
+                img.src = dataUrl;
+            }
+            img.onload = () => {
+                context!.clearRect(0, 0, canvasRef.current!.width, canvasRef.current!.height);
+                context!.drawImage(img, 0, 0, canvasRef.current!.width, canvasRef.current!.height);
+            };
         }
     };
-    const drawImageByUrl = (dataUrl: string | undefined) => {
-        let img = new Image();
-        if (typeof dataUrl === 'string') {
-            img.src = dataUrl;
-        }
-        img.onload = () => {
-            context!.clearRect(0, 0, canvasRef.current!.width, canvasRef.current!.height);
-            context!.drawImage(img, 0, 0, canvasRef.current!.width, canvasRef.current!.height);
-        };
-    };
-
     const save = () => {
         dispatch(
             saveArt({

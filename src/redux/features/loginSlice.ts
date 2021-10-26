@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from 'firebase/auth';
 import { auth } from '../../firebase/firebase';
 import { setError, startLoading, stopLoading } from './appSlice';
@@ -37,9 +37,10 @@ export const authUser = createAsyncThunk('login/authUser', async ({ email, passw
             userUid,
             isAuth: true,
         };
-    } catch (error: any) {
+    } catch (error) {
         thunkAPI.dispatch(stopLoading('idle'));
-        thunkAPI.dispatch(setError(error.message));
+        const message = (error as Error).message;
+        thunkAPI.dispatch(setError(message));
         return thunkAPI.rejectWithValue({
             userEmail: null,
             isAuth: false,
@@ -53,9 +54,10 @@ export const logOutUser = createAsyncThunk('login/logOutUser ', async (_, thunkA
         .then(() => {
             thunkAPI.dispatch(stopLoading('idle'));
         })
-        .catch((error: any) => {
+        .catch((error) => {
+            const message = (error as Error).message;
             thunkAPI.dispatch(stopLoading('idle'));
-            thunkAPI.dispatch(setError(error.message));
+            thunkAPI.dispatch(setError(message));
         });
 });
 
@@ -65,34 +67,37 @@ const initialState: InitialStateType = {
     isAuth: false,
 };
 
-const onFulfilled = (state: InitialStateType, action: any) => {
-    state.userEmail = action.payload.userEmail;
-    state.uid = action.payload.userUid;
-    state.isAuth = action.payload.isAuth;
+const onFulfilled = (
+    state: InitialStateType,
+    { payload }: PayloadAction<{ isAuth: boolean; userEmail: string; userUid: string }>,
+) => {
+    state.userEmail = payload.userEmail;
+    state.uid = payload.userUid;
+    state.isAuth = payload.isAuth;
 };
-const onRejected = (state: InitialStateType, action: any) => {
-    state.isAuth = action.payload.isAuth;
-    state.userEmail = action.payload.userEmail;
+const onRejected = (state: InitialStateType, { payload }: PayloadAction<{ isAuth: boolean; userEmail: string }>) => {
+    state.isAuth = payload.isAuth;
+    state.userEmail = payload.userEmail;
 };
 
 const slice = createSlice({
     name: 'loginSlice',
     initialState: initialState,
     reducers: {
-        setNotAuth(state: InitialStateType, action) {
-            state.userEmail = action.payload.userEmail;
-            state.isAuth = action.payload.isAuth;
+        setNotAuth(state: InitialStateType, { payload }: PayloadAction<{ isAuth: boolean; userEmail: string }>) {
+            state.userEmail = payload.userEmail;
+            state.isAuth = payload.isAuth;
         },
     },
-    extraReducers: (builder) => {
+    extraReducers: (builder: any) => {
         builder.addCase(createUser.fulfilled, onFulfilled);
         builder.addCase(createUser.rejected, onRejected);
         builder.addCase(authUser.fulfilled, onFulfilled);
         builder.addCase(authUser.rejected, onRejected);
-        builder.addCase(logOutUser.fulfilled, (state: InitialStateType, action) => {
+        builder.addCase(logOutUser.fulfilled, (state: InitialStateType) => {
             state.isAuth = false;
         });
-        builder.addCase(logOutUser.rejected, (state: InitialStateType, action: any) => {
+        builder.addCase(logOutUser.rejected, (state: InitialStateType) => {
             state.isAuth = true;
         });
     },
@@ -111,3 +116,4 @@ type AuthType = {
     email: string;
     password: string;
 };
+type payloadType = { payload: { userEmail: string | null; userUid: string | null; isAuth: boolean } };
