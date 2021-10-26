@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Canvas from '../../components/canvas/Canvas';
-import s from './toolbar.module.scss';
+import style from './toolbar.module.scss';
 
 export const Paint = () => {
     const toolsLeftBlock: string[] = ['brush', 'rect', 'circle', 'line', 'eraser', 'clear'];
@@ -11,28 +11,28 @@ export const Paint = () => {
 
     return (
         <>
-            <div className={s.toolbar}>
+            <div className={style.toolbar}>
                 {toolsLeftBlock.map((name) => {
                     return (
                         <button
                             key={name}
-                            className={`${s[name]}  ${activeTool === name ? s.activeBtn : ''}`}
+                            className={`${style[name]}  ${activeTool === name ? style.activeBtn : ''}`}
                             onClick={() => setActiveTool(name)}
                         />
                     );
                 })}
 
-                <div className={s.colorContainer}>
-                    <div className={s.text}>Line color</div>
+                <div className={style.colorContainer}>
+                    <div className={style.text}>Line color</div>
                     <input type="color" value={outlineColor} onChange={(e) => setOutlineColor(e.target.value)} />
                 </div>
-                <div className={s.colorContainer}>
-                    <div className={s.text}>Fill color</div>
+                <div className={style.colorContainer}>
+                    <div className={style.text}>Fill color</div>
                     <input type="color" value={fillColor} onChange={(e) => setFillColor(e.target.value)} />
                 </div>
 
-                <div className={s.lineWidthContainer}>
-                    <div className={s.text}>Line width</div>
+                <div className={style.lineWidthContainer}>
+                    <div className={style.text}>Line width</div>
                     <input
                         type="number"
                         value={lineWidth}

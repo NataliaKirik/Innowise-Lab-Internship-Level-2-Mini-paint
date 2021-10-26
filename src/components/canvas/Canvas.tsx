@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import s from './canvas.module.scss';
+import style from './canvas.module.scss';
 import { useSelector } from 'react-redux';
 import { AppRootStateType, useAppDispatch } from '../../redux/store';
 import IconButton from '@mui/material/IconButton';
@@ -133,7 +133,7 @@ const Canvas = (props: canvasPropsType) => {
     };
 
     return (
-        <div className={s.mainWrapper}>
+        <div className={style.mainWrapper}>
             <canvas
                 ref={canvasRef}
                 onMouseDown={onMouseDownHandler}
@@ -142,14 +142,14 @@ const Canvas = (props: canvasPropsType) => {
                 width="950px"
                 height="570px"
             />
-            <div className={s.buttonsContainer}>
-                <IconButton color="primary" className={s.button} onClick={undo}>
+            <div className={style.buttonsContainer}>
+                <IconButton color="primary" className={style.button} onClick={undo}>
                     <UndoIcon fontSize={'large'} />
                 </IconButton>
-                <IconButton color="primary" className={s.button} onClick={redo}>
+                <IconButton color="primary" className={style.button} onClick={redo}>
                     <RedoIcon fontSize={'large'} />
                 </IconButton>
-                <IconButton color="primary" className={s.button} onClick={save}>
+                <IconButton color="primary" className={style.button} onClick={save}>
                     <SaveIcon fontSize={'large'} />
                 </IconButton>
             </div>

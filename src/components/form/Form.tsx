@@ -1,7 +1,7 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { formInput, formPropsType } from './types';
-import s from './form.module.scss';
+import style from './form.module.scss';
 import { Button, TextField } from '@mui/material';
 import { ErrorMessage } from '@hookform/error-message';
 import { NavLink } from 'react-router-dom';
@@ -22,9 +22,9 @@ const Form = (props: formPropsType) => {
     });
 
     return (
-        <div className={s.formContainer}>
+        <div className={style.formContainer}>
             <form onSubmit={handleSubmit(props.onSubmit)}>
-                <div className={s.text}>Email</div>
+                <div className={style.text}>Email</div>
                 <TextField
                     {...register('email', {
                         required: {
@@ -39,16 +39,16 @@ const Form = (props: formPropsType) => {
                     color={'primary'}
                     label={'email'}
                     variant={'outlined'}
-                    className={s.textField}
+                    className={style.textField}
                     autoComplete={'off'}
                 />
                 <ErrorMessage
                     errors={errors}
                     name="email"
-                    render={({ message }) => <div className={s.error}>{message}</div>}
+                    render={({ message }) => <div className={style.error}>{message}</div>}
                 />
 
-                <div className={s.text}>Password</div>
+                <div className={style.text}>Password</div>
                 <TextField
                     {...register('password', {
                         required: {
@@ -67,18 +67,18 @@ const Form = (props: formPropsType) => {
                     color={'primary'}
                     label={'password'}
                     variant={'outlined'}
-                    className={s.textField}
+                    className={style.textField}
                     type="password"
                 />
                 <ErrorMessage
                     errors={errors}
                     name="password"
-                    render={({ message }) => <div className={s.error}>{message}</div>}
+                    render={({ message }) => <div className={style.error}>{message}</div>}
                 />
 
                 {props.showBlockConfirmPassword && (
                     <>
-                        <div className={s.text}>Confirm password</div>
+                        <div className={style.text}>Confirm password</div>
                         <TextField
                             {...register('password_repeat', {
                                 validate: (value) => value === watch('password') || "Passwords don't match.",
@@ -86,13 +86,13 @@ const Form = (props: formPropsType) => {
                             color={'primary'}
                             label={'password'}
                             variant={'outlined'}
-                            className={s.textField}
+                            className={style.textField}
                             type="password"
                         />
                         <ErrorMessage
                             errors={errors}
                             name="password_repeat"
-                            render={({ message }) => <div className={s.error}>{message}</div>}
+                            render={({ message }) => <div className={style.error}>{message}</div>}
                         />
                     </>
                 )}
@@ -102,8 +102,8 @@ const Form = (props: formPropsType) => {
                 </Button>
 
                 {props.showBlockToRegistration && (
-                    <div className={s.blockToRegistration}>
-                        <div className={s.regText}>Don't have an account?</div>
+                    <div className={style.blockToRegistration}>
+                        <div className={style.regText}>Don't have an account?</div>
                         <div>
                             <NavLink to={PATH.REGISTER}>Registration</NavLink>
                         </div>

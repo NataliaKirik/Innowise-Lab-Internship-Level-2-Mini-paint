@@ -1,5 +1,5 @@
 import React from 'react';
-import s from './preloader.module.scss';
+import style from './preloader.module.scss';
 import LoaderGif from '../../assets/img/loader.gif';
 import { useSelector } from 'react-redux';
 import { AppRootStateType } from '../../redux/store';
@@ -12,7 +12,7 @@ const Preloader = () => {
         return null;
     }
     return (
-        <div className={s.loaderContainer}>
+        <div className={style.loaderContainer}>
             <div>
                 <img src={LoaderGif} alt="preloader" />
             </div>

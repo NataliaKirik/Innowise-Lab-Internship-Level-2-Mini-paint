@@ -3,7 +3,7 @@ import { AppRootStateType, useAppDispatch } from '../../redux/store';
 import { getArt, getUsers, ImageType, setSelectedUser } from '../../redux/features/gallerySlice';
 import { Autocomplete, TextField } from '@mui/material';
 import { useSelector } from 'react-redux';
-import s from './gallery.module.scss';
+import style from './gallery.module.scss';
 
 export const Gallery = () => {
     const dispatch = useAppDispatch();
@@ -39,9 +39,9 @@ export const Gallery = () => {
                     label: selectedUser,
                     id: selectedUser,
                 }}
-                className={s.inputSelect}
+                className={style.inputSelect}
             />
-            <div className={s.imageWrapper}>
+            <div className={style.imageWrapper}>
                 {images.map(({ image, id }) => (
                     <img src={image} alt={id} key={id} />
                 ))}
