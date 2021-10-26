@@ -6,11 +6,11 @@ import IconButton from '@mui/material/IconButton';
 import UndoIcon from '@mui/icons-material/Undo';
 import RedoIcon from '@mui/icons-material/Redo';
 import SaveIcon from '@mui/icons-material/Save';
-import { saveArt } from '../../firebase/db';
-import { startLoading, stopLoading } from '../../redux/features/appSlice';
 import { calculateWidthAndHeight, clearCanvasAndDrawImageData, drawByCoordinates } from './draw';
+import { saveArt } from '../../redux/features/gallerySlice';
+import { canvasPropsType } from './types';
 
-const Canvas = (props: any) => {
+const Canvas = (props: canvasPropsType) => {
     const canvasRef = useRef<HTMLCanvasElement | null>(null);
     const [context, setContext] = useState<CanvasRenderingContext2D | null>(null);
     const [startX, setStartX] = useState<number>(0);
@@ -51,7 +51,7 @@ const Canvas = (props: any) => {
         if (isPainting && context && startX && startY && canvasRef.current) {
             context.strokeStyle = props.outlineColor;
             context.fillStyle = props.fillColor;
-            context.lineWidth = props.width;
+            context.lineWidth = props.lineWidth;
             switch (props.activeTool) {
                 case 'rect':
                     const dimensions = calculateWidthAndHeight(event, target, startX, startY);
@@ -93,40 +93,38 @@ const Canvas = (props: any) => {
     };
 
     const undo = () => {
-        if (undoList.length > 0) {
+        if (redoList.length > 0) {
             let dataUrl = undoList.pop();
             redoList.push(canvasRef.current!.toDataURL());
-            let img = new Image();
-            if (typeof dataUrl === 'string') {
-                img.src = dataUrl;
-            }
-            img.onload = () => {
-                context!.clearRect(0, 0, canvasRef.current!.width, canvasRef.current!.height);
-                context!.drawImage(img, 0, 0, canvasRef.current!.width, canvasRef.current!.height);
-            };
-        } else {
-            context!.clearRect(0, 0, canvasRef.current!.width, canvasRef.current!.height);
+            drawImageByUrl(dataUrl);
         }
     };
     const redo = () => {
         if (redoList.length > 0) {
             let dataUrl = redoList.pop();
             undoList.push(canvasRef.current!.toDataURL());
-            let img = new Image();
-            if (typeof dataUrl === 'string') {
-                img.src = dataUrl;
-            }
-            img.onload = () => {
-                context!.clearRect(0, 0, canvasRef.current!.width, canvasRef.current!.height);
-                context!.drawImage(img, 0, 0, canvasRef.current!.width, canvasRef.current!.height);
-            };
+            drawImageByUrl(dataUrl);
         }
     };
+    const drawImageByUrl = (dataUrl: string | undefined) => {
+        let img = new Image();
+        if (typeof dataUrl === 'string') {
+            img.src = dataUrl;
+        }
+        img.onload = () => {
+            context!.clearRect(0, 0, canvasRef.current!.width, canvasRef.current!.height);
+            context!.drawImage(img, 0, 0, canvasRef.current!.width, canvasRef.current!.height);
+        };
+    };
+
     const save = () => {
-        dispatch(startLoading('loading'));
-        saveArt(userEmail, userId, canvasRef.current!.toDataURL()).then(() => {
-            dispatch(stopLoading('idle'));
-        });
+        dispatch(
+            saveArt({
+                userEmail,
+                userId,
+                canvasDataUrl: canvasRef.current!.toDataURL(),
+            }),
+        );
     };
 
     return (

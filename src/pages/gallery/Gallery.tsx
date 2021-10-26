@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { AppRootStateType, useAppDispatch } from '../../redux/store';
-import { getImages, getUsers, ImageType, setSelectedUser } from '../../redux/features/gallerySlice';
+import { getArt, getUsers, ImageType, setSelectedUser } from '../../redux/features/gallerySlice';
 import { Autocomplete, TextField } from '@mui/material';
 import { useSelector } from 'react-redux';
 import s from './gallery.module.scss';
@@ -25,7 +25,7 @@ export const Gallery = () => {
     }, []);
 
     useEffect(() => {
-        dispatch(getImages(selectedUser));
+        dispatch(getArt(selectedUser));
     }, [selectedUser]);
 
     return (
