@@ -1,8 +1,9 @@
 import { appActionTypes, authActionTypes, galleryActionTypes } from './actionTypes';
+import { statusType } from '../features/appSlice';
 
 //app
-type setStatusActionType = { type: typeof appActionTypes.SET_STATUS; error: string };
-type setErrorActionType = { type: typeof appActionTypes.SET_ERROR; status: string };
+type setStatusActionType = { type: typeof appActionTypes.SET_STATUS; status: statusType };
+type setErrorActionType = { type: typeof appActionTypes.SET_ERROR; errorMessage: string };
 export type appActionsType = setStatusActionType | setErrorActionType;
 export type appInitialState = {
     error: null | string;

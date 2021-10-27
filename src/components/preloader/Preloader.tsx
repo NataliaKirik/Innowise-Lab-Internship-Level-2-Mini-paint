@@ -6,7 +6,6 @@ import { statusType } from '../../redux/features/appSlice';
 import { RootStateType } from '../../redux/reducers/rootReducer';
 
 const Preloader = () => {
-    // @ts-ignore
     const status = useSelector<RootStateType, statusType>((state) => state.app.status);
 
     if (status === 'idle') {

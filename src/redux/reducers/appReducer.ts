@@ -8,12 +8,12 @@ const initialState: appInitialState = {
 
 export function appReducer(state: appInitialState = initialState, action: appActionsType) {
     switch (action.type) {
-        case appActionTypes.SET_STATUS:
+        case appActionTypes.SET_ERROR:
             return {
                 ...state,
-                error: action.error,
+                error: action.errorMessage,
             };
-        case appActionTypes.SET_ERROR:
+        case appActionTypes.SET_STATUS:
             return {
                 ...state,
                 status: action.status,
