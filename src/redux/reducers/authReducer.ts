@@ -1,5 +1,5 @@
 import { authActionTypes } from '../types/actionTypes';
-import { authActionsType, authInitialState } from '../types/types';
+import { authInitialState, setAuthUserData } from '../types/types';
 
 const initialState: authInitialState = {
     userEmail: null,
@@ -7,22 +7,14 @@ const initialState: authInitialState = {
     isAuth: false,
 };
 
-export function authReducer(state: authInitialState = initialState, action: authActionsType) {
+export function authReducer(state: authInitialState = initialState, action: setAuthUserData) {
     switch (action.type) {
-        case authActionTypes.SET_EMAIL:
+        case authActionTypes.SET_USER_DATA:
             return {
                 ...state,
-                userEmail: action.userEmail,
-            };
-        case authActionTypes.SET_UID:
-            return {
-                ...state,
-                uid: action.userUid,
-            };
-        case authActionTypes.SET_IS_AUTH:
-            return {
-                ...state,
-                isAuth: action.isAuth,
+                userEmail: action.payload.email,
+                uid: action.payload.uid,
+                isAuth: action.payload.isAuth,
             };
     }
     return state;

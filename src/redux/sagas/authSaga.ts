@@ -3,7 +3,8 @@ import { appActionTypes, authActionTypes } from '../types/actionTypes';
 import { User } from '@firebase/auth-types';
 import { loginUser, logOutUser, registerUser } from '../../services/authService';
 import { sagaPayloadType } from '../types/types';
-import { appStatus } from './appSaga';
+import { appStatus } from '../actions/appAction';
+import { setAuthUserData } from '../actions/authActions';
 
 function* registerSaga({ payload }: sagaPayloadType) {
     const { email, password } = payload;
@@ -12,18 +13,7 @@ function* registerSaga({ payload }: sagaPayloadType) {
         const userData: User = yield call(registerUser, email, password);
         const userEmail = userData.email;
         const userUid = userData.uid;
-        yield put({
-            type: authActionTypes.SET_EMAIL,
-            userEmail,
-        });
-        yield put({
-            type: authActionTypes.SET_UID,
-            userUid,
-        });
-        yield put({
-            type: authActionTypes.SET_IS_AUTH,
-            isAuth: true,
-        });
+        yield put(setAuthUserData(userEmail, userUid, true));
         yield put(appStatus('idle'));
     } catch (error) {
         yield put(appStatus('idle'));
@@ -42,18 +32,7 @@ function* loginSaga({ payload }: sagaPayloadType) {
         const userData: User = yield call(loginUser, email, password);
         const userEmail = userData.email;
         const userUid = userData.uid;
-        yield put({
-            type: authActionTypes.SET_EMAIL,
-            userEmail,
-        });
-        yield put({
-            type: authActionTypes.SET_UID,
-            userUid,
-        });
-        yield put({
-            type: authActionTypes.SET_IS_AUTH,
-            isAuth: true,
-        });
+        yield put(setAuthUserData(userEmail, userUid, true));
         yield put(appStatus('idle'));
     } catch (error) {
         yield put(appStatus('idle'));
@@ -69,10 +48,7 @@ function* logOutSaga() {
     yield put(appStatus('loading'));
     try {
         yield call(logOutUser);
-        yield put({
-            type: authActionTypes.SET_IS_AUTH,
-            isAuth: false,
-        });
+        yield put(setAuthUserData(null, null, false));
         yield put(appStatus('idle'));
     } catch (error) {
         yield put(appStatus('idle'));

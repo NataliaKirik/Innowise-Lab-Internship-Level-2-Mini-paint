@@ -6,9 +6,9 @@ import { Register } from '../../pages/register/Register';
 import { Paint } from '../../pages/paint/Paint';
 import { useSelector } from 'react-redux';
 import { RootStateType } from '../../redux/reducers/rootReducer';
+import { Gallery } from '../../pages/gallery/Gallery';
 
 export const Routes = () => {
-    // @ts-ignore
     const isAuth = useSelector<RootStateType, boolean>((state) => state.auth.isAuth);
 
     return (
@@ -41,20 +41,20 @@ const publicRoutes: RouteType[] = [
         path: PATH.REGISTER,
         component: Register,
     },
-    // {
-    //     path: PATH.GALLERY,
-    //     component: Gallery,
-    // },
+    {
+        path: PATH.GALLERY,
+        component: Gallery,
+    },
 ];
 const privateRoutes: RouteType[] = [
     {
         path: PATH.PAINT,
         component: Paint,
     },
-    // {
-    //     path: PATH.GALLERY,
-    //     component: Gallery,
-    // },
+    {
+        path: PATH.GALLERY,
+        component: Gallery,
+    },
 ];
 
 type RouteType = {

@@ -18,10 +18,10 @@ export type sagaPayloadType = {
 };
 
 //auth
-type setEmailActionType = { type: typeof authActionTypes.SET_EMAIL; userEmail: string };
-type setUidActionType = { type: typeof authActionTypes.SET_UID; userUid: string };
-type setIsAuthType = { type: typeof authActionTypes.SET_IS_AUTH; isAuth: boolean };
-export type authActionsType = setEmailActionType | setUidActionType | setIsAuthType;
+export type setAuthUserData = {
+    type: typeof authActionTypes.SET_USER_DATA;
+    payload: { email: string | null; uid: string | null; isAuth: boolean };
+};
 export type authAction = {
     payload: { email: string; password: string };
 };
@@ -32,12 +32,12 @@ export type authInitialState = {
 };
 
 //gallery
-type setUsersEmailActionType = { type: typeof galleryActionTypes.SET_USERS_EMAIL; usersEmail: [] };
-type setSelectedUserActionType = { type: typeof galleryActionTypes.SET_SELECTED_USER; selectedUser: string };
-type setImagesActionType = { type: typeof galleryActionTypes.SET_IMAGES; images: [] };
+type setUsersEmailActionType = { type: typeof galleryActionTypes.SET_USERS_EMAIL; userEmails: [] };
+type setSelectedUserActionType = { type: typeof galleryActionTypes.SET_SELECTED_USER; value: string };
+type setImagesActionType = { type: typeof galleryActionTypes.SET_IMAGES; arts: [] };
 export type galleryActionsType = setUsersEmailActionType | setSelectedUserActionType | setImagesActionType;
 export type galleryInitialState = {
-    usersEmail: [];
-    selectedUser: string;
+    usersEmail: string[];
+    selectedUserEmail: string;
     images: [];
 };

@@ -3,7 +3,7 @@ import { galleryActionsType, galleryInitialState } from '../types/types';
 
 const initialState: galleryInitialState = {
     usersEmail: [],
-    selectedUser: '',
+    selectedUserEmail: '',
     images: [],
 };
 
@@ -12,17 +12,17 @@ export function galleryReducer(state: galleryInitialState = initialState, action
         case galleryActionTypes.SET_USERS_EMAIL:
             return {
                 ...state,
-                usersEmail: action.usersEmail,
+                usersEmail: action.userEmails,
             };
         case galleryActionTypes.SET_SELECTED_USER:
             return {
                 ...state,
-                selectedUser: action.selectedUser,
+                selectedUserEmail: action.value,
             };
         case galleryActionTypes.SET_IMAGES:
             return {
                 ...state,
-                images: action.images,
+                images: action.arts,
             };
     }
     return state;
