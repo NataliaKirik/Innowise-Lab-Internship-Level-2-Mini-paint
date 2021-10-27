@@ -3,10 +3,12 @@ import { appActionTypes, authActionTypes } from '../types/actionTypes';
 import { User } from '@firebase/auth-types';
 import { loginUser, logOutUser, registerUser } from '../../services/authService';
 import { sagaPayloadType } from '../types/types';
+import { appStatus } from './appSaga';
 
 function* registerSaga({ payload }: sagaPayloadType) {
     const { email, password } = payload;
     try {
+        yield put(appStatus('loading'));
         const userData: User = yield call(registerUser, email, password);
         const userEmail = userData.email;
         const userUid = userData.uid;
@@ -22,7 +24,9 @@ function* registerSaga({ payload }: sagaPayloadType) {
             type: authActionTypes.SET_IS_AUTH,
             isAuth: true,
         });
+        yield put(appStatus('idle'));
     } catch (error) {
+        yield put(appStatus('idle'));
         const errorMessage = (error as Error)?.message;
         yield put({
             type: appActionTypes.SET_ERROR,
@@ -34,6 +38,7 @@ function* registerSaga({ payload }: sagaPayloadType) {
 function* loginSaga({ payload }: sagaPayloadType) {
     const { email, password } = payload;
     try {
+        yield put(appStatus('loading'));
         const userData: User = yield call(loginUser, email, password);
         const userEmail = userData.email;
         const userUid = userData.uid;
@@ -49,7 +54,9 @@ function* loginSaga({ payload }: sagaPayloadType) {
             type: authActionTypes.SET_IS_AUTH,
             isAuth: true,
         });
+        yield put(appStatus('idle'));
     } catch (error) {
+        yield put(appStatus('idle'));
         const errorMessage = (error as Error)?.message;
         yield put({
             type: appActionTypes.SET_ERROR,
@@ -59,13 +66,16 @@ function* loginSaga({ payload }: sagaPayloadType) {
 }
 
 function* logOutSaga() {
+    yield put(appStatus('loading'));
     try {
         yield call(logOutUser);
         yield put({
             type: authActionTypes.SET_IS_AUTH,
             isAuth: false,
         });
+        yield put(appStatus('idle'));
     } catch (error) {
+        yield put(appStatus('idle'));
         const errorMessage = (error as Error)?.message;
         yield put({
             type: appActionTypes.SET_ERROR,

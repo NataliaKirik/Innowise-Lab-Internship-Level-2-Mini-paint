@@ -14,9 +14,10 @@ export function appReducer(state: appInitialState = initialState, action: appAct
                 error: action.errorMessage,
             };
         case appActionTypes.SET_STATUS:
+            debugger;
             return {
                 ...state,
-                status: action.status,
+                status: action.payload.status,
             };
     }
     return state;
