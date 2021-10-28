@@ -41,3 +41,17 @@ export type galleryInitialState = {
     selectedUserEmail: string;
     images: [];
 };
+export type saveArtSagaParamsType = {
+    type: galleryActionTypes;
+    payload: {
+        userEmail: string;
+        userId: string;
+        canvasDataUrl: string;
+    };
+};
+export type getArtSagaParamsType = {
+    type: galleryActionTypes;
+    payload: {
+        selectedUserEmail: string;
+    };
+};

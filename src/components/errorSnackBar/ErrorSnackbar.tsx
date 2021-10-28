@@ -9,6 +9,7 @@ import { RootStateType } from '../../redux/reducers/rootReducer';
 export function SimpleSnackbar() {
     const [open, setOpen] = React.useState(false);
     const [message, setMessage] = React.useState('');
+    // @ts-ignore
     const errorMessage = useSelector<RootStateType, string | null>((state) => state.app.error);
 
     useEffect(() => {

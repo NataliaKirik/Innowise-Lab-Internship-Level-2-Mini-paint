@@ -6,6 +6,7 @@ import { RootStateType } from '../../redux/reducers/rootReducer';
 import { statusType } from '../../redux/types/types';
 
 const Preloader = () => {
+    // @ts-ignore
     const status = useSelector<RootStateType, statusType>((state) => state.app.status);
     if (status === 'loading') {
         return (

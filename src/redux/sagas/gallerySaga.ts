@@ -3,6 +3,7 @@ import { appStatus } from '../actions/appAction';
 import { User } from '@firebase/auth-types';
 import { appActionTypes, galleryActionTypes } from '../types/actionTypes';
 import { getArt, getUsersEmail, saveArt } from '../../services/galleryService';
+import { getArtSagaParamsType, saveArtSagaParamsType } from '../types/types';
 
 function* getUsersEmailSaga() {
     try {
@@ -23,7 +24,7 @@ function* getUsersEmailSaga() {
     }
 }
 
-function* getArtSaga({ payload }: any) {
+function* getArtSaga({ payload }: getArtSagaParamsType) {
     const { selectedUserEmail } = payload;
     try {
         yield put(appStatus('loading'));
@@ -43,11 +44,12 @@ function* getArtSaga({ payload }: any) {
     }
 }
 
-function* saveArtSaga({ payload }: any) {
-    const { email, uid, canvasDataUrl } = payload;
+function* saveArtSaga({ payload }: saveArtSagaParamsType) {
+    debugger;
+    const { userEmail, userId, canvasDataUrl } = payload;
     try {
         yield put(appStatus('loading'));
-        yield call(saveArt, email, uid, canvasDataUrl);
+        yield call(saveArt, userEmail, userId, canvasDataUrl);
         yield put(appStatus('idle'));
     } catch (error) {
         yield put(appStatus('idle'));
