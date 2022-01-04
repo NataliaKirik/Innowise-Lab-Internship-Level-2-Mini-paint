@@ -10,7 +10,7 @@
 > $git clone https://github.com/NataliaKirik/Innowise-Lab-Internship-Level-2-Mini-paint.git
 
 2.Go to the directory
-> $ cd Innowise-Lab-Internship-Level-2-Mini-paint
+> $ cd Mini-paint
 
 3.Install the npm modules
 > $ npm install
